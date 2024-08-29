@@ -2,7 +2,7 @@
 Hello, My name is Muhammad Awan Ardy Firmansyah and you can call me **"Awan"** or **"Ardy"**. I'm Frontend Developer on freelance work.
 
 ## 🔨 Currently Building
-- Hiragana and Katana Classification using Tensorflow
+- Event management system using NextJS
 - Statistical analysis of agricultural product prices
 - Todolist app using Flutter
 
