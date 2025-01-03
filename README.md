@@ -2,15 +2,16 @@
 Hello, My name is Muhammad Awan Ardy Firmansyah and you can call me **"Awan"** or **"Ardy"**. I'm Frontend Developer on freelance work.
 
 ## 🔨 Currently Building
-- Event management system using NextJS
+- Event management system using NuxtJS
+- Chess Game
+- Agriculture App
 - Statistical analysis of agricultural product prices
 - Todolist app using Flutter
 
 ## 🌱 Currently Learning
-- **JavaScript Frameworks**: Vue.js and Svelte
+- **JavaScript Frameworks**: Vue.js, Svelte and Nuxt JS
 - **State Management**: Redux, Zustand and Recoil
 - **Web Performance Optimization**: Lazy loading, code splitting and lighthouse
-- **Machine Learning and Data Science**: Supervised/Unsupervised Learning, Data Visualization, Statistical Analysis
 
 ## 🧠 Currently Exploring
 - **Web3 technologies and blockchain integration**
