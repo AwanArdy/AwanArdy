@@ -21,3 +21,5 @@ Web: [awanardy.github.io](https://awanardy.vercel.app/)
 Email: [muhammadawan46@gmail.com](muhammadawan46@gmail.com)
 <br>
 Twitter: [@awannardyy](https://x.com/AwannArdyy)
+
+![Codewars](https://github.r2v.ch/codewars?user=AwanArdy&stroke=red)
