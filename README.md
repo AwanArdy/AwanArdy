@@ -1,6 +1,8 @@
 ## Hi there 👋
 Hello, My name is Muhammad Awan Ardy Firmansyah and you can call me **"Awan"** or **"Ardy"**. I'm Backend Developer on freelance work.
 
+![Codewars](https://github.r2v.ch/codewars?user=AwanArdy&stroke=red)
+
 ## 🔨 Currently Building
 - Event management system using NuxtJS
 - Chess Game
@@ -15,4 +17,4 @@ Hello, My name is Muhammad Awan Ardy Firmansyah and you can call me **"Awan"** o
 ## 🧠 Currently Exploring
 - **Web3 technologies and blockchain integration**
 
-![Codewars](https://github.r2v.ch/codewars?user=AwanArdy&stroke=red)
+
