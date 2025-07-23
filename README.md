@@ -1,5 +1,5 @@
 ## Hi there 👋
-Hello, My name is Muhammad Awan Ardy Firmansyah and you can call me **"Awan"** or **"Ardy"**. I'm Backend Developer on freelance work.
+Hello, my name is Muhammad Awan Ardy Firmansyah and you can call me **"Awan"** or **"Ardy"**. I work as a freelance backend developer.
 
 ![Codewars](https://github.r2v.ch/codewars?user=AwanArdy&stroke=red)
 
