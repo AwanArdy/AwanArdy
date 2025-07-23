@@ -15,11 +15,4 @@ Hello, My name is Muhammad Awan Ardy Firmansyah and you can call me **"Awan"** o
 ## 🧠 Currently Exploring
 - **Web3 technologies and blockchain integration**
 
-## 📫 How to reach me:
-Web: [awanardy.github.io](https://awanardy.vercel.app/)
-<br>
-Email: [muhammadawan46@gmail.com](muhammadawan46@gmail.com)
-<br>
-Twitter: [@awannardyy](https://x.com/AwannArdyy)
-
 ![Codewars](https://github.r2v.ch/codewars?user=AwanArdy&stroke=red)
