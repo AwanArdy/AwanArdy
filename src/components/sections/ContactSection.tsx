@@ -7,15 +7,13 @@ interface ContactSectionProps {
   copiedEmail: boolean;
   onCopyEmail: () => void;
   onTogglePolarity: (e: React.MouseEvent) => void;
-  setCursorExpanded: (expanded: boolean) => void;
 }
 
 export const ContactSection: React.FC<ContactSectionProps> = ({
   isInverted,
   copiedEmail,
   onCopyEmail,
-  onTogglePolarity,
-  setCursorExpanded
+  onTogglePolarity
 }) => {
   return (
     <section id="contact" className="grid grid-cols-1 lg:grid-cols-12">
@@ -36,8 +34,6 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
         <div className="mt-8 sm:mt-10 pt-6 border-t border-current flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
           <button
             onClick={onCopyEmail}
-            onMouseEnter={() => setCursorExpanded(true)}
-            onMouseLeave={() => setCursorExpanded(false)}
             className="w-full sm:w-auto justify-center border-2 border-current px-4 sm:px-6 py-3.5 sm:py-4 font-mono text-xs sm:text-sm uppercase font-bold flex items-center gap-2.5 hover:bg-current group transition-colors cursor-pointer"
           >
             {copiedEmail ? (
@@ -59,8 +55,6 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
 
           <button
             onClick={onTogglePolarity}
-            onMouseEnter={() => setCursorExpanded(true)}
-            onMouseLeave={() => setCursorExpanded(false)}
             className="w-full sm:w-auto justify-center border-2 border-current px-4 sm:px-6 py-3.5 sm:py-4 font-mono text-xs sm:text-sm uppercase font-bold flex items-center gap-2.5 hover:bg-current group transition-colors cursor-pointer"
           >
             <Contrast className={`w-4 h-4 shrink-0 group-hover:${isInverted ? "text-black" : "text-white"}`} />

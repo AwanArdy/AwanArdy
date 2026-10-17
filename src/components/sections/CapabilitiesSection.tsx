@@ -5,14 +5,12 @@ interface CapabilitiesSectionProps {
   isInverted: boolean;
   selectedSkill: string | null;
   onSelectSkill: (tech: string | null) => void;
-  setCursorExpanded: (expanded: boolean) => void;
 }
 
 export const CapabilitiesSection: React.FC<CapabilitiesSectionProps> = ({
   isInverted,
   selectedSkill,
-  onSelectSkill,
-  setCursorExpanded
+  onSelectSkill
 }) => {
   return (
     <section id="capabilities" className="border-b border-current">
@@ -67,8 +65,6 @@ export const CapabilitiesSection: React.FC<CapabilitiesSectionProps> = ({
                     <button
                       key={tech}
                       onClick={() => onSelectSkill(tech)}
-                      onMouseEnter={() => setCursorExpanded(true)}
-                      onMouseLeave={() => setCursorExpanded(false)}
                       className={`skill-pill-btn px-3 py-1.5 font-mono text-xs uppercase border border-current transition-colors ${
                         isSelected
                           ? "bg-current font-bold"

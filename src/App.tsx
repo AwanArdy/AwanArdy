@@ -9,10 +9,10 @@ import { CapabilitiesSection } from './components/sections/CapabilitiesSection';
 import { ExperienceSection } from './components/sections/ExperienceSection';
 import { ProjectsSection } from './components/sections/ProjectsSection';
 import { ContactSection } from './components/sections/ContactSection';
+import { Footer } from './components/sections/Footer';
 import { SmartctlTuiModal } from './components/modals/SmartctlTuiModal';
 import { AtsCvModal } from './components/modals/AtsCvModal';
 import { PolarityTransitionOverlay } from './components/ui/PolarityTransitionOverlay';
-import { CursorFollower } from './components/ui/CursorFollower';
 
 // Ensure anime is globally accessible for backward compatibility
 if (typeof window !== 'undefined') {
@@ -30,8 +30,6 @@ export default function App() {
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
   const [activeProject, setActiveProject] = useState<string | null>("01");
   const [copiedEmail, setCopiedEmail] = useState(false);
-  const [mouseCoords, setMouseCoords] = useState({ x: 0, y: 0 });
-  const [cursorExpanded, setCursorExpanded] = useState(false);
   const [isTuiOpen, setIsTuiOpen] = useState(false);
   const [isCvModalOpen, setIsCvModalOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState("00:00:00 WITA");
@@ -185,15 +183,6 @@ export default function App() {
     });
   };
 
-  // Track mouse coordinates for Swiss HUD & custom kinetic follower
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMouseCoords({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
   // Live WITA (Palu, Central Sulawesi UTC+8) Clock
   useEffect(() => {
     const updateClock = () => {
@@ -284,12 +273,6 @@ export default function App() {
         totalShutterTiles={TOTAL_SHUTTER_TILES}
       />
 
-      {/* Custom Kinetic Cursor Follower (Desktop Only) */}
-      <CursorFollower
-        mouseCoords={mouseCoords}
-        cursorExpanded={cursorExpanded}
-      />
-
       {/* ==========================================
           TOP STICKY SWISS NAVIGATION & TELEMETRY BAR
          ========================================== */}
@@ -300,13 +283,12 @@ export default function App() {
         onOpenCvModal={() => setIsCvModalOpen(true)}
         onTogglePolarity={handleAnimatedPolarityToggle}
         onScrollToSection={scrollToSection}
-        setCursorExpanded={setCursorExpanded}
       />
 
       {/* ==========================================
           MAIN SWISS ASYMMETRIC MODULAR CONTAINER
          ========================================== */}
-      <main className="max-w-[1440px] mx-auto border-x border-current">
+      <main className="w-full">
         {/* ------------------------------------------
             HERO SECTION (INTERNATIONAL TYPOGRAPHIC STYLE)
            ------------------------------------------ */}
@@ -315,7 +297,6 @@ export default function App() {
           currentTime={currentTime}
           onReplayKinetic={triggerHeroKineticTypography}
           heroTitleRef={heroTitleRef}
-          setCursorExpanded={setCursorExpanded}
           renderKineticChars={renderKineticChars}
           onTogglePolarity={handleAnimatedPolarityToggle}
         />
@@ -332,7 +313,6 @@ export default function App() {
           isInverted={isInverted}
           selectedSkill={selectedSkill}
           onSelectSkill={handleSelectSkill}
-          setCursorExpanded={setCursorExpanded}
         />
 
         {/* ------------------------------------------
@@ -342,7 +322,6 @@ export default function App() {
           isInverted={isInverted}
           selectedSkill={selectedSkill}
           onOpenTuiModal={() => setIsTuiOpen(true)}
-          setCursorExpanded={setCursorExpanded}
         />
 
         {/* ------------------------------------------
@@ -353,7 +332,6 @@ export default function App() {
           activeProject={activeProject}
           setActiveProject={setActiveProject}
           selectedSkill={selectedSkill}
-          setCursorExpanded={setCursorExpanded}
         />
 
         {/* ------------------------------------------
@@ -364,9 +342,20 @@ export default function App() {
           copiedEmail={copiedEmail}
           onCopyEmail={handleCopyEmail}
           onTogglePolarity={handleAnimatedPolarityToggle}
-          setCursorExpanded={setCursorExpanded}
         />
       </main>
+
+      {/* ==========================================
+          FOOTER (FULL-WIDTH SWISS COLOPHON & TELEMETRY)
+         ========================================== */}
+      <Footer
+        isInverted={isInverted}
+        currentTime={currentTime}
+        onScrollToSection={scrollToSection}
+        onTogglePolarity={handleAnimatedPolarityToggle}
+        onOpenCvModal={() => setIsCvModalOpen(true)}
+        onOpenTuiModal={() => setIsTuiOpen(true)}
+      />
 
       {/* ==========================================
           MODALS (SMARTCTL TUI & ATS CV VIEW)

@@ -10,7 +10,6 @@ interface HeaderProps {
   onOpenCvModal: () => void;
   onTogglePolarity: (e: React.MouseEvent) => void;
   onScrollToSection: (id: string) => void;
-  setCursorExpanded: (expanded: boolean) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -19,12 +18,11 @@ export const Header: React.FC<HeaderProps> = ({
   setTransitionMode,
   onOpenCvModal,
   onTogglePolarity,
-  onScrollToSection,
-  setCursorExpanded
+  onScrollToSection
 }) => {
   return (
     <header className={`sticky top-0 z-30 border-b border-current ${isInverted ? "bg-black" : "bg-white"}`}>
-      <div className="max-w-[1440px] mx-auto grid grid-cols-12 text-xs font-mono uppercase tracking-wider">
+      <div className="w-full grid grid-cols-12 text-xs font-mono uppercase tracking-wider">
         {/* Brand Index */}
         <div className="col-span-7 sm:col-span-6 md:col-span-3 p-3 sm:p-4 border-r border-current flex items-center justify-between gap-2">
           <span className="font-bold tracking-tighter text-xs sm:text-sm truncate">M. AWAN ARDY F.</span>
@@ -60,8 +58,6 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               key={nav.label}
               onClick={() => onScrollToSection(nav.target)}
-              onMouseEnter={() => setCursorExpanded(true)}
-              onMouseLeave={() => setCursorExpanded(false)}
               className="px-2 py-1 hover:bg-current transition-colors group"
             >
               <span className={`group-hover:${isInverted ? "text-black" : "text-white"}`}>
@@ -75,8 +71,6 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="col-span-5 sm:col-span-6 md:col-span-5 lg:col-span-2 flex items-center justify-end">
           <button
             onClick={onOpenCvModal}
-            onMouseEnter={() => setCursorExpanded(true)}
-            onMouseLeave={() => setCursorExpanded(false)}
             className="h-full px-2.5 sm:px-4 py-3 border-r border-current hover:bg-current group transition-colors flex items-center gap-1.5"
             title="Open Printable ATS CV"
           >
@@ -86,8 +80,6 @@ export const Header: React.FC<HeaderProps> = ({
 
           <button
             onClick={onTogglePolarity}
-            onMouseEnter={() => setCursorExpanded(true)}
-            onMouseLeave={() => setCursorExpanded(false)}
             className="h-full px-2.5 sm:px-4 py-3 hover:bg-current group transition-colors flex items-center gap-1.5 font-bold cursor-pointer"
             title="Trigger Anime.js Polarity Invert Transition"
           >

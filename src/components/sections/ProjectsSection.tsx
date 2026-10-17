@@ -8,15 +8,13 @@ interface ProjectsSectionProps {
   activeProject: string | null;
   setActiveProject: (id: string | null) => void;
   selectedSkill: string | null;
-  setCursorExpanded: (expanded: boolean) => void;
 }
 
 export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
   isInverted,
   activeProject,
   setActiveProject,
-  selectedSkill,
-  setCursorExpanded
+  selectedSkill
 }) => {
   return (
     <section id="projects" className="border-b border-current">
@@ -50,8 +48,6 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
             >
               <div
                 onClick={() => setActiveProject(isOpen ? null : project.id)}
-                onMouseEnter={() => setCursorExpanded(true)}
-                onMouseLeave={() => setCursorExpanded(false)}
                 className={`p-5 sm:p-10 cursor-pointer transition-colors flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6 ${
                   isOpen ? "bg-current" : "hover:bg-current/5"
                 }`}

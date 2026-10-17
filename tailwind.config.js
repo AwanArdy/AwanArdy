@@ -8,9 +8,7 @@ export default {
     extend: {
       fontFamily: {
         sans: [
-          '"Helvetica Neue"',
-          'Helvetica',
-          'Arial',
+          '"Plus Jakarta Sans"',
           '-apple-system',
           'BlinkMacSystemFont',
           '"Segoe UI"',

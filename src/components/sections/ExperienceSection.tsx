@@ -6,14 +6,12 @@ interface ExperienceSectionProps {
   isInverted: boolean;
   selectedSkill: string | null;
   onOpenTuiModal: () => void;
-  setCursorExpanded: (expanded: boolean) => void;
 }
 
 export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   isInverted,
   selectedSkill,
-  onOpenTuiModal,
-  setCursorExpanded
+  onOpenTuiModal
 }) => {
   return (
     <section id="experience" className="border-b border-current">
@@ -94,8 +92,6 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                   {exp.hasInteractiveDemo && (
                     <button
                       onClick={onOpenTuiModal}
-                      onMouseEnter={() => setCursorExpanded(true)}
-                      onMouseLeave={() => setCursorExpanded(false)}
                       className="border-2 border-current px-3 py-1.5 font-mono text-xs uppercase font-bold flex items-center gap-2 hover:bg-current group transition-colors cursor-pointer"
                     >
                       <Terminal className={`w-3.5 h-3.5 group-hover:${isInverted ? "text-black" : "text-white"}`} />

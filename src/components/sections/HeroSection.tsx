@@ -9,7 +9,6 @@ interface HeroSectionProps {
   currentTime: string;
   onReplayKinetic: () => void;
   heroTitleRef: React.RefObject<HTMLDivElement | null>;
-  setCursorExpanded: (expanded: boolean) => void;
   renderKineticChars: (text: string) => React.ReactNode;
   onTogglePolarity: (e: React.MouseEvent) => void;
 }
@@ -19,12 +18,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   currentTime,
   onReplayKinetic,
   heroTitleRef,
-  setCursorExpanded,
   renderKineticChars,
   onTogglePolarity
 }) => {
   return (
-    <section className="grid grid-cols-1 lg:grid-cols-12 border-b border-current">
+    <section id="hero" className="grid grid-cols-1 lg:grid-cols-12 border-b border-current">
       {/* Left Column: Massive Kinetic Display Typography */}
       <div className="lg:col-span-7 xl:col-span-8 p-5 sm:p-10 md:p-14 border-b lg:border-b-0 lg:border-r border-current flex flex-col justify-between relative overflow-hidden">
         <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] sm:text-xs uppercase tracking-widest mb-6 sm:mb-8 pb-3 border-b border-current">
@@ -50,11 +48,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <span>FULLSTACK WEB DEVELOPER — {CV_DATA.experienceYears} PRODUCTION</span>
           </div>
 
-          <h1 
-            onMouseEnter={() => setCursorExpanded(true)}
-            onMouseLeave={() => setCursorExpanded(false)}
-            className="text-[clamp(2.25rem,8vw,5.4rem)] font-black uppercase tracking-tighter leading-[0.92] break-words"
-          >
+          <h1 className="text-[clamp(2.25rem,8vw,5.4rem)] font-black uppercase tracking-tighter leading-[0.92] break-words">
             <div className="block">{renderKineticChars("MUHAMMAD")}</div>
             <div className="block">{renderKineticChars("AWAN ARDY")}</div>
             <div className="inline-block border-2 border-current px-2 sm:px-4 mt-2 bg-current max-w-full overflow-hidden">
@@ -109,8 +103,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div className="grid grid-cols-2 font-mono text-xs uppercase">
           <a
             href={`mailto:${CV_DATA.email}`}
-            onMouseEnter={() => setCursorExpanded(true)}
-            onMouseLeave={() => setCursorExpanded(false)}
             className="p-4 sm:p-5 border-r border-current flex items-center justify-between hover:bg-current group transition-colors font-bold"
           >
             <span className={`group-hover:${isInverted ? "text-black" : "text-white"}`}>
@@ -122,8 +114,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             href={CV_DATA.github}
             target="_blank"
             rel="noopener noreferrer"
-            onMouseEnter={() => setCursorExpanded(true)}
-            onMouseLeave={() => setCursorExpanded(false)}
             className="p-4 sm:p-5 flex items-center justify-between hover:bg-current group transition-colors font-bold"
           >
             <span className={`group-hover:${isInverted ? "text-black" : "text-white"}`}>
