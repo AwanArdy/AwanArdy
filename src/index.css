@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-color: #ffffff;
+    --fg-color: #000000;
+    --scrollbar-track: #ffffff;
+    --scrollbar-thumb: #000000;
+    --scrollbar-thumb-hover: #333333;
+    --scrollbar-border: #000000;
+  }
+
+  html.inverted,
+  html.dark {
+    --bg-color: #000000;
+    --fg-color: #ffffff;
+    --scrollbar-track: #000000;
+    --scrollbar-thumb: #ffffff;
+    --scrollbar-thumb-hover: #cccccc;
+    --scrollbar-border: #ffffff;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--fg-color);
+    /* Standard CSS Scrollbar Styling for Firefox & modern browsers */
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--fg-color);
+    overflow-x: hidden;
+  }
+
+  /* =======================================================
+     SWISS INTEGRATED SCROLLBAR (WEBKIT / CHROME / SAFARI / EDGE)
+     Sleek, minimalist, geometric, perfectly blending into the Swiss UI
+     ======================================================= */
+  ::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: var(--scrollbar-track);
+    border-left: 1px solid var(--scrollbar-border);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+    border-radius: 0px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover);
+  }
+
+  ::-webkit-scrollbar-corner {
+    background-color: var(--scrollbar-track);
+  }
+
+  /* Selection styling */
+  ::selection {
+    background-color: var(--fg-color);
+    color: var(--bg-color);
+  }
+}
+
+/* Modal and container scrollbars */
+.swiss-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+.swiss-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.swiss-scrollbar::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-left: 1px solid var(--scrollbar-border);
+}
+
+.swiss-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 0px;
+}
+
+.swiss-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Swiss Kinetic Marquee */
+@keyframes swissMarquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: swissMarquee 24s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
