@@ -38,15 +38,15 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
           >
             {copiedEmail ? (
               <>
-                <Check className={`w-4 h-4 shrink-0 group-hover:${isInverted ? "text-black" : "text-white"}`} />
-                <span className={`truncate group-hover:${isInverted ? "text-black" : "text-white"}`}>
+                <Check className={`w-4 h-4 shrink-0 group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`} />
+                <span className={`truncate group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
                   COPIED: {CV_DATA.email}
                 </span>
               </>
             ) : (
               <>
-                <Copy className={`w-4 h-4 shrink-0 group-hover:${isInverted ? "text-black" : "text-white"}`} />
-                <span className={`truncate group-hover:${isInverted ? "text-black" : "text-white"}`}>
+                <Copy className={`w-4 h-4 shrink-0 group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`} />
+                <span className={`truncate group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
                   COPY EMAIL: {CV_DATA.email}
                 </span>
               </>
@@ -57,8 +57,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
             onClick={onTogglePolarity}
             className="w-full sm:w-auto justify-center border-2 border-current px-4 sm:px-6 py-3.5 sm:py-4 font-mono text-xs sm:text-sm uppercase font-bold flex items-center gap-2.5 hover:bg-current group transition-colors cursor-pointer"
           >
-            <Contrast className={`w-4 h-4 shrink-0 group-hover:${isInverted ? "text-black" : "text-white"}`} />
-            <span className={`group-hover:${isInverted ? "text-black" : "text-white"}`}>
+            <Contrast className={`w-4 h-4 shrink-0 group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`} />
+            <span className={`group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
               ANIMATE THEME INVERT
             </span>
           </button>

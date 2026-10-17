@@ -34,8 +34,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               className="border border-current px-2 py-0.5 text-[10px] hover:bg-current group transition-colors flex items-center gap-1"
               title="Replay Kinetic Typography Animation"
             >
-              <RefreshCw className={`w-2.5 h-2.5 group-hover:${isInverted ? "text-black" : "text-white"}`} />
-              <span className={`group-hover:${isInverted ? "text-black" : "text-white"}`}>
+              <RefreshCw className={`w-2.5 h-2.5 group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`} />
+              <span className={`group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
                 REPLAY KINETIC
               </span>
             </button>
@@ -105,10 +105,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             href={`mailto:${CV_DATA.email}`}
             className="p-4 sm:p-5 border-r border-current flex items-center justify-between hover:bg-current group transition-colors font-bold"
           >
-            <span className={`group-hover:${isInverted ? "text-black" : "text-white"}`}>
+            <span className={`group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
               EMAIL DIRECT
             </span>
-            <ArrowUpRight className={`w-4 h-4 shrink-0 group-hover:${isInverted ? "text-black" : "text-white"}`} />
+            <ArrowUpRight className={`w-4 h-4 shrink-0 group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`} />
           </a>
           <a
             href={CV_DATA.github}
@@ -116,10 +116,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             rel="noopener noreferrer"
             className="p-4 sm:p-5 flex items-center justify-between hover:bg-current group transition-colors font-bold"
           >
-            <span className={`group-hover:${isInverted ? "text-black" : "text-white"}`}>
+            <span className={`group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
               GITHUB REPO
             </span>
-            <ArrowUpRight className={`w-4 h-4 shrink-0 group-hover:${isInverted ? "text-black" : "text-white"}`} />
+            <ArrowUpRight className={`w-4 h-4 shrink-0 group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`} />
           </a>
         </div>
       </div>

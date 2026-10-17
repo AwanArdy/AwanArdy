@@ -6,20 +6,12 @@
   :root {
     --bg-color: #ffffff;
     --fg-color: #000000;
-    --scrollbar-track: #ffffff;
-    --scrollbar-thumb: #000000;
-    --scrollbar-thumb-hover: #333333;
-    --scrollbar-border: #000000;
   }
 
   html.inverted,
   html.dark {
     --bg-color: #000000;
     --fg-color: #ffffff;
-    --scrollbar-track: #000000;
-    --scrollbar-thumb: #ffffff;
-    --scrollbar-thumb-hover: #cccccc;
-    --scrollbar-border: #ffffff;
   }
 
   html {
@@ -27,9 +19,8 @@
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background-color: var(--bg-color);
     color: var(--fg-color);
-    /* Standard CSS Scrollbar Styling for Firefox & modern browsers */
-    scrollbar-width: thin;
-    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 
   body {
@@ -38,33 +29,21 @@
     background-color: var(--bg-color);
     color: var(--fg-color);
     overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 
-  /* =======================================================
-     SWISS INTEGRATED SCROLLBAR (WEBKIT / CHROME / SAFARI / EDGE)
-     Sleek, minimalist, geometric, perfectly blending into the Swiss UI
-     ======================================================= */
+  /* Hide scrollbars completely for ultra-clean UI */
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
   ::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background-color: var(--scrollbar-track);
-    border-left: 1px solid var(--scrollbar-border);
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: var(--scrollbar-thumb);
-    border-radius: 0px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: var(--scrollbar-thumb-hover);
-  }
-
-  ::-webkit-scrollbar-corner {
-    background-color: var(--scrollbar-track);
+    display: none;
+    width: 0px;
+    height: 0px;
+    background: transparent;
   }
 
   /* Selection styling */
@@ -74,29 +53,37 @@
   }
 }
 
-/* Modal and container scrollbars */
+/* Modal and container scrollbars - hidden */
 .swiss-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .swiss-scrollbar::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  display: none;
+  width: 0px;
+  height: 0px;
+  background: transparent;
 }
 
-.swiss-scrollbar::-webkit-scrollbar-track {
-  background: var(--scrollbar-track);
-  border-left: 1px solid var(--scrollbar-border);
+/* ==========================================
+   UNIVERSAL SWISS HOVER TEXT COLOR CONVERSION
+   When hovering over elements with hover:bg-current,
+   invert text and icons cleanly to the contrasting background color
+   ========================================== */
+.group:hover .group-hover-invert,
+.hover-invert:hover {
+  color: var(--bg-color) !important;
 }
 
-.swiss-scrollbar::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-thumb);
-  border-radius: 0px;
+.group:hover .group-hover-invert svg,
+.group:hover svg.group-hover-invert {
+  stroke: var(--bg-color) !important;
 }
 
-.swiss-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: var(--scrollbar-thumb-hover);
+.group:hover .group-hover-invert-border {
+  border-color: var(--bg-color) !important;
+  color: var(--bg-color) !important;
 }
 
 /* Swiss Kinetic Marquee */

@@ -41,7 +41,7 @@ export const Header: React.FC<HeaderProps> = ({
             className="border border-current px-1.5 py-0.5 text-[10px] hover:bg-current group transition-colors shrink-0"
             title="Change Anime.js Theme Transition Style"
           >
-            <span className={`group-hover:${isInverted ? "text-black" : "text-white"}`}>
+            <span className={`group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
               FX: {transitionMode === 'STAGGER_GRID' ? 'MATRIX' : 'SHUTTER'}
             </span>
           </button>
@@ -60,7 +60,7 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={() => onScrollToSection(nav.target)}
               className="px-2 py-1 hover:bg-current transition-colors group"
             >
-              <span className={`group-hover:${isInverted ? "text-black" : "text-white"}`}>
+              <span className={`group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
                 {nav.label}
               </span>
             </button>
@@ -74,8 +74,8 @@ export const Header: React.FC<HeaderProps> = ({
             className="h-full px-2.5 sm:px-4 py-3 border-r border-current hover:bg-current group transition-colors flex items-center gap-1.5"
             title="Open Printable ATS CV"
           >
-            <FileText className={`w-3.5 h-3.5 shrink-0 group-hover:${isInverted ? "text-black" : "text-white"}`} />
-            <span className={`text-[10px] sm:text-xs group-hover:${isInverted ? "text-black" : "text-white"}`}>CV.TEX</span>
+            <FileText className={`w-3.5 h-3.5 shrink-0 group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`} />
+            <span className={`text-[10px] sm:text-xs group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>CV.TEX</span>
           </button>
 
           <button
@@ -83,8 +83,8 @@ export const Header: React.FC<HeaderProps> = ({
             className="h-full px-2.5 sm:px-4 py-3 hover:bg-current group transition-colors flex items-center gap-1.5 font-bold cursor-pointer"
             title="Trigger Anime.js Polarity Invert Transition"
           >
-            <Contrast className={`w-3.5 h-3.5 shrink-0 group-hover:${isInverted ? "text-black" : "text-white"}`} />
-            <span className={`text-[10px] sm:text-xs group-hover:${isInverted ? "text-black" : "text-white"}`}>
+            <Contrast className={`w-3.5 h-3.5 shrink-0 group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`} />
+            <span className={`text-[10px] sm:text-xs group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
               <span className="hidden sm:inline">MODE: </span>
               {isInverted ? "BLK" : "WHT"}
             </span>
@@ -105,7 +105,7 @@ export const Header: React.FC<HeaderProps> = ({
             onClick={() => onScrollToSection(nav.target)}
             className="py-2.5 px-1 text-center hover:bg-current group transition-colors font-bold"
           >
-            <span className={`group-hover:${isInverted ? "text-black" : "text-white"}`}>
+            <span className={`group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
               {nav.label}
             </span>
           </button>

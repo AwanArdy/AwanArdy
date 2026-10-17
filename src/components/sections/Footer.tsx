@@ -49,11 +49,11 @@ export const Footer: React.FC<FooterProps> = ({
               <div className="font-mono text-[10px] uppercase tracking-widest opacity-60 group-hover:opacity-100">
                 NAVIGATION
               </div>
-              <div className={`text-base sm:text-lg font-black uppercase tracking-tight group-hover:${isInverted ? "text-black" : "text-white"}`}>
+              <div className={`text-base sm:text-lg font-black uppercase tracking-tight group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
                 BACK TO TOP
               </div>
             </div>
-            <div className={`w-10 h-10 border border-current flex items-center justify-center shrink-0 group-hover:${isInverted ? "border-black text-black" : "border-white text-white"}`}>
+            <div className={`w-10 h-10 border border-current flex items-center justify-center shrink-0 group-hover-invert-border ${isInverted ? "group-hover:border-black group-hover:text-black" : "group-hover:border-white group-hover:text-white"}`}>
               <ChevronUp className="w-5 h-5" />
             </div>
           </button>
@@ -61,9 +61,9 @@ export const Footer: React.FC<FooterProps> = ({
       </div>
 
       {/* Middle Grid: 4-Column Asymmetric Swiss Layout */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-current font-mono text-xs">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 font-mono text-xs">
         {/* Col 1: System Telemetry */}
-        <div className="p-6 sm:p-8 flex flex-col justify-between space-y-6">
+        <div className="p-6 sm:p-8 flex flex-col justify-between space-y-6 border-b sm:border-b lg:border-b-0 sm:border-r lg:border-r border-current">
           <div>
             <div className="opacity-60 text-[10px] uppercase tracking-widest mb-3">
               01 // TELEMETRY &amp; TIME
@@ -97,7 +97,7 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         {/* Col 2: Navigation Quick Index */}
-        <div className="p-6 sm:p-8 flex flex-col justify-between space-y-6">
+        <div className="p-6 sm:p-8 flex flex-col justify-between space-y-6 border-b sm:border-b lg:border-b-0 lg:border-r border-current">
           <div>
             <div className="opacity-60 text-[10px] uppercase tracking-widest mb-3">
               02 // DIRECT SECTIONS
@@ -128,7 +128,7 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         {/* Col 3: Terminal & Modals Quick Access */}
-        <div className="p-6 sm:p-8 flex flex-col justify-between space-y-6">
+        <div className="p-6 sm:p-8 flex flex-col justify-between space-y-6 border-b sm:border-b-0 sm:border-r lg:border-r border-current">
           <div>
             <div className="opacity-60 text-[10px] uppercase tracking-widest mb-3">
               03 // UTILITIES &amp; DOCS
@@ -138,33 +138,33 @@ export const Footer: React.FC<FooterProps> = ({
                 onClick={onOpenTuiModal}
                 className="py-1.5 px-2 border border-current hover:bg-current group transition-colors flex items-center justify-between text-left"
               >
-                <span className={`flex items-center gap-1.5 group-hover:${isInverted ? "text-black" : "text-white"}`}>
+                <span className={`flex items-center gap-1.5 group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
                   <Terminal className="w-3.5 h-3.5" />
                   <span>SMARTCTL TUI SIM</span>
                 </span>
-                <span className={`text-[10px] group-hover:${isInverted ? "text-black" : "text-white"}`}>RUN</span>
+                <span className={`text-[10px] group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>RUN</span>
               </button>
 
               <button
                 onClick={onOpenCvModal}
                 className="py-1.5 px-2 border border-current hover:bg-current group transition-colors flex items-center justify-between text-left"
               >
-                <span className={`flex items-center gap-1.5 group-hover:${isInverted ? "text-black" : "text-white"}`}>
+                <span className={`flex items-center gap-1.5 group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
                   <FileText className="w-3.5 h-3.5" />
                   <span>CV.TEX ATS VIEW</span>
                 </span>
-                <span className={`text-[10px] group-hover:${isInverted ? "text-black" : "text-white"}`}>VIEW</span>
+                <span className={`text-[10px] group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>VIEW</span>
               </button>
 
               <button
                 onClick={onTogglePolarity}
                 className="py-1.5 px-2 border border-current hover:bg-current group transition-colors flex items-center justify-between text-left"
               >
-                <span className={`flex items-center gap-1.5 group-hover:${isInverted ? "text-black" : "text-white"}`}>
+                <span className={`flex items-center gap-1.5 group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
                   <Contrast className="w-3.5 h-3.5" />
                   <span>POLARITY INVERT</span>
                 </span>
-                <span className={`text-[10px] font-bold group-hover:${isInverted ? "text-black" : "text-white"}`}>
+                <span className={`text-[10px] font-bold group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
                   {isInverted ? "BLK" : "WHT"}
                 </span>
               </button>

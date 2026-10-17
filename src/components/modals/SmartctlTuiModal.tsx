@@ -54,13 +54,13 @@ export const SmartctlTuiModal: React.FC<{ isOpen: boolean; onClose: () => void }
     >
       <div 
         ref={modalBoxRef}
-        className="bg-black text-white border-2 border-white w-full max-w-2xl font-mono p-6 shadow-2xl"
+        className="bg-black text-white border-2 border-white w-full max-w-2xl font-mono p-4 sm:p-6 shadow-2xl max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center border-b border-white pb-3 mb-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-white pb-3 mb-4">
           <div className="flex items-center gap-2 text-xs">
-            <Terminal className="w-4 h-4" />
-            <span>INK + TYPESCRIPT // SMARTCTL STORAGE HEALTH TUI (2025)</span>
+            <Terminal className="w-4 h-4 shrink-0" />
+            <span className="truncate">INK + TYPESCRIPT // SMARTCTL STORAGE TUI</span>
           </div>
           <button 
             onClick={onClose}

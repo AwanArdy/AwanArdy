@@ -29,7 +29,7 @@ export const AtsCvModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
         className="bg-white text-black border-2 border-black w-full max-w-3xl p-6 sm:p-10 my-8 max-h-[90vh] overflow-y-auto font-sans"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center border-b-2 border-black pb-4 mb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b-2 border-black pb-4 mb-6">
           <span className="font-mono text-xs uppercase tracking-widest">
             ATS-FRIENDLY DOCUMENT VIEW // CV.TEX
           </span>

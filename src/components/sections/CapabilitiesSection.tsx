@@ -32,7 +32,7 @@ export const CapabilitiesSection: React.FC<CapabilitiesSectionProps> = ({
               onClick={() => onSelectSkill(null)}
               className="self-start sm:self-auto border-2 border-current px-3 py-1.5 font-mono text-xs uppercase font-bold hover:bg-current group transition-colors shrink-0"
             >
-              <span className={`group-hover:${isInverted ? "text-black" : "text-white"}`}>
+              <span className={`group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
                 RESET FILTER [{selectedSkill}] ×
               </span>
             </button>
@@ -44,7 +44,7 @@ export const CapabilitiesSection: React.FC<CapabilitiesSectionProps> = ({
         {CV_DATA.skills.map((skillGroup, index) => (
           <div
             key={skillGroup.id}
-            className={`p-6 sm:p-8 flex flex-col justify-between border-b sm:border-b lg:border-b-0 ${
+            className={`p-6 sm:p-8 flex flex-col justify-between border-b [&:last-child]:border-b-0 sm:[&:nth-last-child(-n+2)]:border-b-0 lg:border-b-0 ${
               index < 3 ? "lg:border-r" : ""
             } ${index % 2 === 0 ? "sm:border-r" : ""} border-current`}
           >
@@ -77,7 +77,7 @@ export const CapabilitiesSection: React.FC<CapabilitiesSectionProps> = ({
                             ? isInverted
                               ? "text-black"
                               : "text-white"
-                            : `group-hover:${isInverted ? "text-black" : "text-white"}`
+                            : `group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`
                         }
                       >
                         {tech}

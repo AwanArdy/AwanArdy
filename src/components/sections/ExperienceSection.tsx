@@ -94,8 +94,8 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                       onClick={onOpenTuiModal}
                       className="border-2 border-current px-3 py-1.5 font-mono text-xs uppercase font-bold flex items-center gap-2 hover:bg-current group transition-colors cursor-pointer"
                     >
-                      <Terminal className={`w-3.5 h-3.5 group-hover:${isInverted ? "text-black" : "text-white"}`} />
-                      <span className={`group-hover:${isInverted ? "text-black" : "text-white"}`}>
+                      <Terminal className={`w-3.5 h-3.5 group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`} />
+                      <span className={`group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
                         LAUNCH SMARTCTL TUI SIMULATOR
                       </span>
                     </button>

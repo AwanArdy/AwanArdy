@@ -75,6 +75,15 @@ export default function App() {
     triggerHeroKineticTypography();
   }, [triggerHeroKineticTypography]);
 
+  // Sync inverted state to document.documentElement for global theme & CSS variables
+  useEffect(() => {
+    if (isInverted) {
+      document.documentElement.classList.add('inverted', 'dark');
+    } else {
+      document.documentElement.classList.remove('inverted', 'dark');
+    }
+  }, [isInverted]);
+
   // ==========================================
   // EXTRAORDINARY ANIME.JS THEME SWITCH ANIMATION
   // ==========================================

@@ -4,6 +4,14 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  safelist: [
+    'group-hover:text-black',
+    'group-hover:text-white',
+    'group-hover:border-black',
+    'group-hover:border-white',
+    'hover:text-black',
+    'hover:text-white',
+  ],
   theme: {
     extend: {
       fontFamily: {
