@@ -29,7 +29,7 @@ export const Footer: React.FC<FooterProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 border-b border-current">
         <div className="lg:col-span-8 p-6 sm:p-10 border-b lg:border-b-0 lg:border-r border-current flex flex-col justify-between">
           <div className="font-mono text-[10px] sm:text-xs uppercase tracking-widest mb-3 opacity-60">
-            INDEX // 05 — COLOPHON &amp; ARCHITECTURAL SUMMARY
+            INDEX // 06 — COLOPHON &amp; ARCHITECTURAL SUMMARY
           </div>
           <h2 className="text-2xl sm:text-4xl md:text-5xl font-black uppercase tracking-tighter leading-tight">
             MUHAMMAD AWAN ARDY FIRMANSYAH
@@ -108,7 +108,8 @@ export const Footer: React.FC<FooterProps> = ({
                 { label: "01 // CAPABILITIES", target: "capabilities" },
                 { label: "02 // EXPERIENCE", target: "experience" },
                 { label: "03 // SELECTED WORKS", target: "projects" },
-                { label: "04 // CONTACT", target: "contact" }
+                { label: "04 // ARTICLES & GUIDES", target: "articles" },
+                { label: "05 // CONTACT", target: "contact" }
               ].map((item) => (
                 <button
                   key={item.target}

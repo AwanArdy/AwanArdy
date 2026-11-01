@@ -8,6 +8,7 @@ import { MarqueeBanner } from './components/sections/MarqueeBanner';
 import { CapabilitiesSection } from './components/sections/CapabilitiesSection';
 import { ExperienceSection } from './components/sections/ExperienceSection';
 import { ProjectsSection } from './components/sections/ProjectsSection';
+import { ArticlesSection } from './components/sections/ArticlesSection';
 import { ContactSection } from './components/sections/ContactSection';
 import { Footer } from './components/sections/Footer';
 import { SmartctlTuiModal } from './components/modals/SmartctlTuiModal';
@@ -344,7 +345,15 @@ export default function App() {
         />
 
         {/* ------------------------------------------
-            04 // CONTACT & COLOPHON
+            04 // TECHNICAL GUIDES & ARTICLES
+           ------------------------------------------ */}
+        <ArticlesSection
+          isInverted={isInverted}
+          selectedSkill={selectedSkill}
+        />
+
+        {/* ------------------------------------------
+            05 // CONTACT & COLOPHON
            ------------------------------------------ */}
         <ContactSection
           isInverted={isInverted}

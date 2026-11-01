@@ -33,6 +33,46 @@ export interface ProjectItem {
   points: string[];
 }
 
+export interface ArticleCodeBlock {
+  language?: string;
+  filename?: string;
+  code: string;
+  description?: string;
+}
+
+export interface ArticleSubsection {
+  title: string;
+  lead?: string;
+  paragraphs?: string[];
+  codeBlocks?: ArticleCodeBlock[];
+  callout?: {
+    type: 'note' | 'tip' | 'warning';
+    text: string;
+  };
+  list?: string[];
+}
+
+export interface ArticleContentSection {
+  id: string;
+  title: string;
+  iconName?: string;
+  subsections: ArticleSubsection[];
+}
+
+export interface ArticleItem {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle: string;
+  category: string;
+  readTime: string;
+  date: string;
+  author: string;
+  tags: string[];
+  summary: string;
+  sections: ArticleContentSection[];
+}
+
 export interface CvData {
   name: string;
   role: string;

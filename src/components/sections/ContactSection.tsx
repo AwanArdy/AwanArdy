@@ -20,7 +20,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
       <div className="lg:col-span-7 p-5 sm:p-12 border-b lg:border-b-0 lg:border-r border-current flex flex-col justify-between">
         <div>
           <span className="font-mono text-xs uppercase tracking-widest">
-            SECTION // 04 — INITIATE TRANSMISSION
+            SECTION // 05 — INITIATE TRANSMISSION
           </span>
           <h2 className="text-3xl sm:text-6xl xl:text-7xl font-black uppercase tracking-tighter mt-3 leading-[0.92]">
             READY FOR

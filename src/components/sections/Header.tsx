@@ -53,7 +53,8 @@ export const Header: React.FC<HeaderProps> = ({
             { label: "01/CAP", target: "capabilities" },
             { label: "02/EXP", target: "experience" },
             { label: "03/WRK", target: "projects" },
-            { label: "04/CNT", target: "contact" }
+            { label: "04/ART", target: "articles" },
+            { label: "05/CNT", target: "contact" }
           ].map((nav) => (
             <button
               key={nav.label}
@@ -93,17 +94,18 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Mobile & Tablet Quick Navigation Row */}
-      <nav className="grid grid-cols-4 lg:hidden border-t border-current text-[10px] sm:text-xs font-mono uppercase tracking-wider divide-x divide-current">
+      <nav className="grid grid-cols-5 lg:hidden border-t border-current text-[9px] sm:text-xs font-mono uppercase tracking-wider divide-x divide-current">
         {[
-          { label: "01 // CAP", target: "capabilities" },
-          { label: "02 // EXP", target: "experience" },
-          { label: "03 // WRK", target: "projects" },
-          { label: "04 // CNT", target: "contact" }
+          { label: "01/CAP", target: "capabilities" },
+          { label: "02/EXP", target: "experience" },
+          { label: "03/WRK", target: "projects" },
+          { label: "04/ART", target: "articles" },
+          { label: "05/CNT", target: "contact" }
         ].map((nav) => (
           <button
             key={nav.label}
             onClick={() => onScrollToSection(nav.target)}
-            className="py-2.5 px-1 text-center hover:bg-current group transition-colors font-bold"
+            className="py-2.5 px-0.5 sm:px-1 text-center hover:bg-current group transition-colors font-bold truncate"
           >
             <span className={`group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
               {nav.label}
