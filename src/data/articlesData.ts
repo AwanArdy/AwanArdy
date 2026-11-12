@@ -331,5 +331,338 @@ export const ARTICLES_DATA: ArticleItem[] = [
         ]
       }
     ]
+  },
+  {
+    id: "ART-02",
+    slug: "full-setup-fedora-workstation-after-install",
+    title: "Panduan Lengkap Setup Fedora Workstation After Install: Optimalisasi DNF, Desktop & Developer Stack",
+    subtitle: "TUNING DNF SPEED, RPM FUSION, GNOME TWEAKS, RUNTIME PYTHON & TYPESCRIPT, HINGGA INIT DATABASE POSTGRESQL & MYSQL",
+    category: "LINUX & DEVELOPER WORKSTATION",
+    readTime: "16 MIN READ",
+    date: "NOVEMBER 2026",
+    author: "Muhammad Awan Ardy Firmansyah",
+    tags: [
+      "Fedora",
+      "Linux",
+      "Gnome",
+      "DNF",
+      "Python",
+      "TypeScript",
+      "PostgreSQL",
+      "MySQL",
+      "DevOps"
+    ],
+    summary:
+      "Panduan komprehensif pasca-instalasi Fedora Workstation untuk workstation developer. Meliputi percepatan download DNF, aktivasi RPM Fusion & multimedia codecs, setup GNOME Tweaks & Extension Manager, konfigurasi runtime Python dan Node.js/TypeScript, serta setup database PostgreSQL (lengkap dengan initdb) dan MySQL Server.",
+    sections: [
+      {
+        id: "fedora-step-1-dnf-and-update",
+        title: "01 // DNF Speed Optimization, System Upgrade & RPM Fusion",
+        subsections: [
+          {
+            title: "Optimasi Konfigurasi DNF (Kecepatan Download Maksimal)",
+            lead: "Secara default, DNF di Fedora hanya mengunduh 3 paket secara paralel tanpa memilih mirror tercepat. Kita dapat mempercepat DNF berkali-kali lipat dengan mengonfigurasi dnf.conf.",
+            paragraphs: [
+              "Buka dan tambahkan konfigurasi paralel download, pemilihan mirror tercepat, serta konfirmasi default yes pada file konfigurasi DNF sistem:"
+            ],
+            codeBlocks: [
+              {
+                filename: "terminal — tuning /etc/dnf/dnf.conf",
+                language: "bash",
+                code: "sudo tee -a /etc/dnf/dnf.conf << 'EOF'\nmax_parallel_downloads=10\nfastestmirror=True\ndefaultyes=True\nEOF",
+                description: "Menambahkan parameter paralel unduhan dan fastest mirror ke konfigurasi DNF."
+              },
+              {
+                filename: "terminal — system upgrade",
+                language: "bash",
+                code: "sudo dnf upgrade --refresh -y\nsudo dnf autoremove -y",
+                description: "Menyinkronkan metadata repository dan memperbarui seluruh paket Fedora ke versi paling mutakhir."
+              }
+            ]
+          },
+          {
+            title: "Aktivasi RPM Fusion & Multimedia Codecs",
+            lead: "Fedora memegang prinsip software bebas secara ketat, sehingga codec multimedia tertutup (H.264, MP3, AAC) tidak disertakan secara bawaan. Aktifkan repositori RPM Fusion (Free & Non-Free) untuk melengkapinya.",
+            codeBlocks: [
+              {
+                filename: "terminal — enable rpm fusion",
+                language: "bash",
+                code: "# Aktifkan repositori RPM Fusion Free dan Non-Free\nsudo dnf install -y \\\n  https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \\\n  https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm\n\n# Pasang kumpulan codec multimedia lengkap gstreamer\nsudo dnf groupupdate multimedia --setop=\"install_weak_deps=False\" --exclude=PackageKit-gstreamer-plugin -y\nsudo dnf install -y gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav",
+                description: "Mengaktifkan repositori pihak ketiga terpercaya dan memasang pustaka multimedia."
+              }
+            ]
+          },
+          {
+            title: "Instalasi Development Tools & Paket Dasar",
+            lead: "Pasang grup paket compiler C/C++, header kernel, serta utilitas diagnostik sistem.",
+            codeBlocks: [
+              {
+                filename: "terminal — install development tools",
+                language: "bash",
+                code: "sudo dnf groupinstall -y \"Development Tools\" \"C Development Tools and Libraries\"\nsudo dnf install -y curl wget git htop unzip psmisc net-tools \\\n  kernel-devel libffi-devel openssl-devel zlib-devel",
+                description: "Fondasi pustaka compiler dan header development di Fedora."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: "fedora-step-2-desktop-customization",
+        title: "02 // Desktop Customization: GNOME Tweaks & Extension Manager",
+        subsections: [
+          {
+            title: "Instalasi GNOME Tweaks",
+            lead: "Fedora Workstation hadir dengan vanilla GNOME murni. Pasang GNOME Tweaks untuk mengatur perilaku tombol jendela, akselerasi kursor, font rendering, dan tema aplikasi warisan.",
+            codeBlocks: [
+              {
+                filename: "terminal — install gnome-tweaks",
+                language: "bash",
+                code: "sudo dnf install -y gnome-tweaks",
+                description: "Alat kustomisasi mendalam antarmuka lingkungan GNOME Desktop."
+              }
+            ]
+          },
+          {
+            title: "Instalasi GNOME Extension Manager via Flatpak",
+            lead: "Cara paling bersih dan stabil untuk mengelola ekstensi di Fedora adalah menggunakan aplikasi Extension Manager native dari Flathub.",
+            paragraphs: [
+              "Pastikan Flathub remote aktif, lalu pasang Extension Manager:"
+            ],
+            codeBlocks: [
+              {
+                filename: "terminal — setup flathub & extension manager",
+                language: "bash",
+                code: "# Tambahkan remote Flathub resmi\nflatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo\n\n# Pasang Extension Manager\nflatpak install -y flathub com.mattjakeman.ExtensionManager",
+                description: "Instalasi Extension Manager terisolasi melalui Flatpak."
+              }
+            ],
+            callout: {
+              type: "tip",
+              text: "Rekomendasi ekstensi produktivitas yang wajib dipasang: (1) Dash to Dock, (2) AppIndicator and KStatusNotifierItem Support, (3) Clipboard Indicator, (4) Blur my Shell, dan (5) Alphabetical App Grid."
+            }
+          },
+          {
+            title: "Instalasi Font Coding (JetBrains Mono & Fira Code)",
+            lead: "Fedora menyediakan font developer resmi langsung dari repositori DNF tanpa perlu download manual.",
+            codeBlocks: [
+              {
+                filename: "terminal — install coding fonts",
+                language: "bash",
+                code: "sudo dnf install -y fira-code-fonts jetbrains-mono-fonts\n\n# Refresh font cache sistem\nfc-cache -f -v",
+                description: "Memasang font pemrograman standar industri ke font cache sistem."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: "fedora-step-3-programming-environment",
+        title: "03 // Programming Environment: Python & Node.js/TypeScript",
+        subsections: [
+          {
+            title: "Setup Python Development Environment",
+            lead: "Fedora selalu mengusung versi Python terbaru. Sama seperti distribusi modern lainnya, gunakan lingkungan virtual (venv) untuk mengisolasi paket aplikasi.",
+            codeBlocks: [
+              {
+                filename: "terminal — python setup",
+                language: "bash",
+                code: "# Instalasi pip, header dev, dan venv\nsudo dnf install -y python3-pip python3-devel\n\n# Cek versi python\npython3 --version\n\n# Workflow virtual environment standar\nmkdir -p ~/projects/py-demo && cd ~/projects/py-demo\npython3 -m venv .venv\nsource .venv/bin/activate\n\n# Install paket di dalam venv terisolasi\npip install --upgrade pip\npip install fastapi uvicorn requests\ndeactivate",
+                description: "Setup Python 3 dan manajemen virtual environment di Fedora."
+              }
+            ],
+            callout: {
+              type: "tip",
+              text: "Gunakan 'uv' (Astral) untuk mempercepat instalasi pip hingga puluhan kali: 'curl -LsSf https://astral.sh/uv/install.sh | sh'."
+            }
+          },
+          {
+            title: "Setup Node.js & TypeScript via NVM",
+            lead: "Gunakan NVM (Node Version Manager) agar instalasi Node.js berjalan di direktori home pengguna tanpa perlu hak sudo.",
+            codeBlocks: [
+              {
+                filename: "terminal — nvm & node installation",
+                language: "bash",
+                code: "# Download dan jalankan script instalasi NVM\ncurl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash\n\n# Muat konfigurasi NVM ke session shell\nexport NVM_DIR=\"$HOME/.nvm\"\n[ -s \"$NVM_DIR/nvm.sh\" ] && \\. \"$NVM_DIR/nvm.sh\"\n\n# Pasang versi LTS terbaru\nnvm install --lts\nnvm use --lts\n\n# Pasang TypeScript compiler, tsx, dan modern package managers\nnpm install -g typescript tsx pnpm yarn\n\n# Verifikasi\ntsc -v && node -v && pnpm -v",
+                description: "Instalasi Node.js LTS dan TypeScript di user environment."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: "fedora-step-4-postgresql-setup",
+        title: "04 // Tutorial Setup PostgreSQL di Fedora: Inisialisasi Database & Role",
+        subsections: [
+          {
+            title: "Instalasi & Wajib: Inisialisasi Database (Initdb)",
+            lead: "PENTING DI FEDORA: Berbeda dengan Ubuntu yang langsung menginisialisasi database saat diinstal, di Fedora/RHEL Anda WAJIB menjalankan 'postgresql-setup --initdb' sebelum dapat menyalakan servicenya.",
+            paragraphs: [
+              "Jika Anda langsung menjalankan 'systemctl start postgresql' tanpa inisialisasi, service akan gagal berjalan dengan status failure. Ikuti urutan perintah berikut:"
+            ],
+            codeBlocks: [
+              {
+                filename: "terminal — install & initdb postgresql",
+                language: "bash",
+                code: "# 1. Pasang paket postgresql server dan ekstensi contrib\nsudo dnf install -y postgresql-server postgresql-contrib\n\n# 2. Inisialisasi cluster database pertama kali (WAJIB di Fedora!)\nsudo postgresql-setup --initdb\n\n# 3. Aktifkan dan jalankan service PostgreSQL\nsudo systemctl enable --now postgresql\n\n# 4. Verifikasi status berjalan aktif\nsudo systemctl status postgresql --no-pager",
+                description: "Instalasi, inisialisasi cluster data, dan pengaktifan daemon PostgreSQL di Fedora."
+              }
+            ]
+          },
+          {
+            title: "Konfigurasi Role Developer & Database Baru",
+            lead: "Masuk ke command line administrative menggunakan akun postgres bawaan sistem:",
+            codeBlocks: [
+              {
+                filename: "terminal — masuk ke psql prompt",
+                language: "bash",
+                code: "# Berpindah ke user postgres\nsudo -i -u postgres\n\n# Buka interactive console\npsql",
+                description: "Akses konsol psql menggunakan root akun postgres."
+              },
+              {
+                filename: "psql (interactive console)",
+                language: "sql",
+                code: "-- 1. Buat role pengembang dengan hak login dan password\nCREATE ROLE devuser WITH LOGIN PASSWORD 'SuperDevPassword2026!';\n\n-- 2. Berikan izin membuat database dan status superuser untuk local dev\nALTER ROLE devuser CREATEDB SUPERUSER;\n\n-- 3. Buat database workspace utama\nCREATE DATABASE dev_workspace OWNER devuser;\n\n-- 4. Berikan seluruh hak akses\nGRANT ALL PRIVILEGES ON DATABASE dev_workspace TO devuser;\n\n-- 5. Keluar dari psql\n\\q",
+                description: "Script SQL pembuatan user dan database PostgreSQL."
+              },
+              {
+                filename: "terminal — keluar dari akun postgres",
+                language: "bash",
+                code: "exit",
+                description: "Kembali ke shell pengguna biasa."
+              }
+            ]
+          },
+          {
+            title: "Konfigurasi Autentikasi pg_hba.conf & Uji Koneksi",
+            lead: "Lokasi file konfigurasi PostgreSQL di Fedora berada di /var/lib/pgsql/data/. Pastikan koneksi local host TCP diizinkan menggunakan metode scram-sha-256.",
+            paragraphs: [
+              "Uji koneksi dari terminal user biasa menggunakan TCP localhost (127.0.0.1):"
+            ],
+            codeBlocks: [
+              {
+                filename: "terminal — test koneksi postgresql",
+                language: "bash",
+                code: "# Uji koneksi dengan user baru (akan meminta password)\npsql -h 127.0.0.1 -U devuser -d dev_workspace -W\n\n# Di dalam prompt database:\nSELECT version();\nSELECT current_user, current_database();\n\\q",
+                description: "Memverifikasi otentikasi login database via TCP localhost."
+              }
+            ],
+            callout: {
+              type: "note",
+              text: "Catatan: File konfigurasi utama terletak di '/var/lib/pgsql/data/pg_hba.conf' dan 'postgresql.conf'. Jika Anda melakukan modifikasi, restart service dengan 'sudo systemctl restart postgresql'."
+            }
+          }
+        ]
+      },
+      {
+        id: "fedora-step-5-mysql-setup",
+        title: "05 // Tutorial Setup MySQL Server di Fedora: Instalasi, Secure Setup & Grants",
+        subsections: [
+          {
+            title: "Instalasi MySQL Community Server",
+            lead: "Di repositori resmi Fedora, paket MySQL server tersedia dengan nama 'community-mysql-server' (atau Anda juga dapat memilih 'mariadb-server').",
+            codeBlocks: [
+              {
+                filename: "terminal — install mysql server",
+                language: "bash",
+                code: "# Pasang Community MySQL Server\nsudo dnf install -y community-mysql-server\n\n# Aktifkan dan jalankan daemon mysqld\nsudo systemctl enable --now mysqld\n\n# Verifikasi status layanan\nsudo systemctl status mysqld --no-pager",
+                description: "Instalasi dan startup MySQL daemon di Fedora."
+              }
+            ]
+          },
+          {
+            title: "Menjalankan MySQL Secure Installation",
+            lead: "Jalankan wizard pengamanan bawaan untuk menghapus database test dan membatasi akses remote yang tidak diinginkan.",
+            codeBlocks: [
+              {
+                filename: "terminal — secure installation",
+                language: "bash",
+                code: "sudo mysql_secure_installation",
+                description: "Wizard pengamanan MySQL server."
+              }
+            ],
+            callout: {
+              type: "tip",
+              text: "Di Fedora, instalasi awal community-mysql-server biasanya menghasilkan root tanpa password atau log temporer di /var/log/mysqld.log. Anda dapat menetapkan root password baru pada wizard ini."
+            }
+          },
+          {
+            title: "Membuat User Developer Baru & Database UTF8MB4",
+            lead: "Masuk ke MySQL shell untuk membuat akun developer khusus proyek:",
+            codeBlocks: [
+              {
+                filename: "terminal — login ke mysql",
+                language: "bash",
+                code: "sudo mysql -u root -p",
+                description: "Masuk ke shell prompt administrative MySQL."
+              },
+              {
+                filename: "mysql (interactive shell)",
+                language: "sql",
+                code: "-- 1. Buat user developer baru dengan password\nCREATE USER 'devuser'@'localhost' IDENTIFIED BY 'StrongMySQLPass2026!';\n\n-- 2. Berikan hak akses penuh ke seluruh database lokal\nGRANT ALL PRIVILEGES ON *.* TO 'devuser'@'localhost' WITH GRANT OPTION;\nFLUSH PRIVILEGES;\n\n-- 3. Buat database default dengan charset full UTF-8 (multilingual & emoji support)\nCREATE DATABASE dev_workspace CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\n\n-- 4. Keluar dari MySQL\nEXIT;",
+                description: "Perintah SQL untuk membuat akun developer dan database."
+              },
+              {
+                filename: "terminal — test login mysql user",
+                language: "bash",
+                code: "# Uji koneksi tanpa menggunakan hak akses root/sudo:\nmysql -u devuser -p dev_workspace\n\n# Masukkan password: StrongMySQLPass2026!\nSTATUS;\nEXIT;",
+                description: "Login dengan kredensial pengembang baru."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: "fedora-step-6-pro-tools",
+        title: "06 // Final Touches: VS Code, Git SSH & Docker / Podman",
+        subsections: [
+          {
+            title: "Instalasi Visual Studio Code (Repositori Resmi Microsoft)",
+            lead: "Pasang Visual Studio Code versi native RPM langsung dari repositori resmi Microsoft untuk mendapatkan pembaruan otomatis yang cepat.",
+            codeBlocks: [
+              {
+                filename: "terminal — install vscode via rpm repo",
+                language: "bash",
+                code: "# Impor GPG key resmi Microsoft\nsudo rpm --import https://packages.microsoft.com/keys/microsoft.asc\n\n# Tambahkan repository VS Code\nsudo tee /etc/yum.repos.d/vscode.repo << 'EOF'\n[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc\nEOF\n\n# Pasang VS Code\nsudo dnf install -y code",
+                description: "Menambahkan repositori resmi Microsoft dan memasang VS Code native RPM."
+              }
+            ]
+          },
+          {
+            title: "Container Runtime: Podman Native vs Docker CE",
+            lead: "Fedora menyertakan Podman secara default (daemonless, rootless, kompatibel penuh dengan CLI docker). Jika Anda memerlukan Docker CE engine asli, tambahkan repositori resmi Docker.",
+            codeBlocks: [
+              {
+                filename: "terminal — podman (rekomendasi bawaan fedora)",
+                language: "bash",
+                code: "# Podman sudah terpasang bawaan di Fedora. Anda cukup memasang podman-docker jika ingin alias 'docker':\nsudo dnf install -y podman podman-docker\n\n# Verifikasi podman\npodman --version\ndocker --version",
+                description: "Menggunakan runtime container rootless modern native Fedora."
+              },
+              {
+                filename: "terminal — atau pasang docker ce resmi",
+                language: "bash",
+                code: "# Tambahkan repositori Docker CE resmi Fedora\nsudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo\nsudo dnf install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin\n\n# Aktifkan service dan beri izin user\nsudo systemctl enable --now docker\nsudo usermod -aG docker $USER\nnewgrp docker",
+                description: "Alternatif instalasi Docker CE resmi standar industri."
+              }
+            ]
+          },
+          {
+            title: "Konfigurasi Git & Ed25519 SSH Key",
+            lead: "Konfigurasikan author commit dan generate SSH key untuk akun GitHub Anda.",
+            codeBlocks: [
+              {
+                filename: "terminal — git config & ssh",
+                language: "bash",
+                code: "git config --global user.name \"Muhammad Awan Ardy Firmansyah\"\ngit config --global user.email \"muhammadawan46@gmail.com\"\ngit config --global init.defaultBranch main\n\n# Generate Modern Ed25519 Key\nssh-keygen -t ed25519 -C \"muhammadawan46@gmail.com\"\ncat ~/.ssh/id_ed25519.pub",
+                description: "Setup identitas Git dan public key SSH."
+              }
+            ],
+            callout: {
+              type: "tip",
+              text: "Fedora Workstation Anda kini telah 100% siap tempur dengan performa DNF maksimal, GUI GNOME yang telah di-tweak, runtime programming mutakhir, dan database engine siap pakai!"
+            }
+          }
+        ]
+      }
+    ]
   }
 ];
