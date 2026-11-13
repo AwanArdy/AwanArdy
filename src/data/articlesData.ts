@@ -686,7 +686,7 @@ export const ARTICLES_DATA: ArticleItem[] = [
       "macOS"
     ],
     summary:
-      "Tutorial komprehensif menginstal dan mengonfigurasi environment Flutter SDK dari nol tanpa memasang Android Studio yang berat. Menggunakan Android Command-line Tools (sdkmanager), OpenJDK 17, target Android 10+ (API 29-35), dukungan Flutter Web di browser, serta integrasi workflow di VS Code dan Neovim (flutter-tools.nvim) untuk Linux, Windows, dan macOS.",
+      "Tutorial komprehensif menginstal dan mengonfigurasi environment Flutter SDK dari nol tanpa memasang Android Studio yang berat. Menggunakan Android Command-line Tools (sdkmanager), OpenJDK 21 LTS (default modern Ubuntu & Fedora), target Android 10+ (API 29-35), dukungan Flutter Web di browser, serta integrasi workflow di VS Code dan Neovim (flutter-tools.nvim) untuk Linux, Windows, dan macOS.",
     sections: [
       {
         id: "flutter-step-1-architecture",
@@ -696,7 +696,7 @@ export const ARTICLES_DATA: ArticleItem[] = [
             title: "Efisiensi Resource & Otomasi Command-Line",
             lead: "Android Studio adalah IDE yang sangat lengkap, namun memakan 3GB hingga 6GB RAM hanya untuk proses dasarnya. Dengan metode Headless CLI, Anda menghemat gigabytes disk space dan RAM secara masif.",
             paragraphs: [
-              "Flutter pada dasarnya hanya membutuhkan tiga komponen inti dari ekosistem Android: Java Development Kit (OpenJDK), Android Command-line Tools (sdkmanager), dan Platform SDK. Seluruh proses build APK, download emulator, hingga deployment ke device dapat dieksekusi 100% via terminal.",
+              "Flutter pada dasarnya hanya membutuhkan tiga komponen inti dari ekosistem Android: Java Development Kit (OpenJDK 21 LTS), Android Command-line Tools (sdkmanager), dan Platform SDK. Seluruh proses build APK, download emulator, hingga deployment ke device dapat dieksekusi 100% via terminal.",
               "Panduan ini dirancang untuk: (1) Menjalankan aplikasi ke Android fisik/emulator dengan target Android 10+ (API level 29 hingga 34/35), (2) Menjalankan Flutter Web langsung di browser (Chrome/Edge/Web-Server), dan (3) Integrasi editing, code navigation, serta hot reload di VS Code dan Neovim."
             ],
             callout: {
@@ -708,35 +708,35 @@ export const ARTICLES_DATA: ArticleItem[] = [
       },
       {
         id: "flutter-step-2-os-prerequisites",
-        title: "02 // Instalasi OpenJDK & Flutter SDK Berdasarkan OS",
+        title: "02 // Instalasi OpenJDK 21 LTS & Flutter SDK Berdasarkan OS",
         subsections: [
           {
             title: "A. Pemasangan di Linux (Ubuntu / Debian / Fedora)",
-            lead: "Pasang OpenJDK 17 LTS dan dependensi inti Linux, lalu clone Flutter SDK langsung dari repository resmi GitHub.",
+            lead: "Pasang OpenJDK 21 LTS (versi LTS default modern di Ubuntu 24.04+ & Fedora 40+) dan dependensi inti Linux, lalu clone Flutter SDK langsung dari repository resmi GitHub.",
             codeBlocks: [
               {
                 filename: "terminal — ubuntu / debian",
                 language: "bash",
-                code: "# 1. Install OpenJDK 17 dan utilitas sistem\nsudo apt update\nsudo apt install -y openjdk-17-jdk git curl unzip xz-utils zip libglu1-mesa clang cmake ninja-build pkg-config libgtk-3-dev\n\n# 2. Buat direktori dan unduh Flutter SDK Stable\nmkdir -p ~/development\ncd ~/development\ngit clone https://github.com/flutter/flutter.git -b stable\n\n# 3. Daftarkan Flutter ke PATH (~/.bashrc atau ~/.zshrc)\necho 'export PATH=\"$HOME/development/flutter/bin:$PATH\"' >> ~/.bashrc\nsource ~/.bashrc\n\n# 4. Verifikasi instalasi flutter\nflutter --version",
-                description: "Instalasi Java dan Flutter SDK di distribusi Debian/Ubuntu."
+                code: "# 1. Install OpenJDK 21 dan utilitas sistem\nsudo apt update\nsudo apt install -y openjdk-21-jdk git curl unzip xz-utils zip libglu1-mesa clang cmake ninja-build pkg-config libgtk-3-dev\n\n# 2. Buat direktori dan unduh Flutter SDK Stable\nmkdir -p ~/development\ncd ~/development\ngit clone https://github.com/flutter/flutter.git -b stable\n\n# 3. Daftarkan Flutter ke PATH (~/.bashrc atau ~/.zshrc)\necho 'export PATH=\"$HOME/development/flutter/bin:$PATH\"' >> ~/.bashrc\nsource ~/.bashrc\n\n# 4. Verifikasi instalasi flutter & java\njava -version\nflutter --version",
+                description: "Instalasi Java 21 LTS dan Flutter SDK di distribusi Debian/Ubuntu."
               },
               {
                 filename: "terminal — fedora workstation",
                 language: "bash",
-                code: "# 1. Install Java 17 dan dependencies\nsudo dnf install -y java-17-openjdk-devel git curl unzip clang cmake ninja-build pkg-config gtk3-devel\n\n# 2. Clone Flutter SDK ke home folder\nmkdir -p ~/development && cd ~/development\ngit clone https://github.com/flutter/flutter.git -b stable\n\n# 3. Export PATH\necho 'export PATH=\"$HOME/development/flutter/bin:$PATH\"' >> ~/.bashrc\nsource ~/.bashrc",
-                description: "Perintah instalasi untuk Fedora / RHEL."
+                code: "# 1. Install Java 21 LTS dan dependencies\nsudo dnf install -y java-21-openjdk-devel git curl unzip clang cmake ninja-build pkg-config gtk3-devel\n\n# 2. Clone Flutter SDK ke home folder\nmkdir -p ~/development && cd ~/development\ngit clone https://github.com/flutter/flutter.git -b stable\n\n# 3. Export PATH\necho 'export PATH=\"$HOME/development/flutter/bin:$PATH\"' >> ~/.bashrc\nsource ~/.bashrc",
+                description: "Perintah instalasi OpenJDK 21 untuk Fedora / RHEL."
               }
             ]
           },
           {
             title: "B. Pemasangan di Windows (PowerShell / Winget)",
-            lead: "Di Windows, gunakan Windows Package Manager (winget) untuk menginstal OpenJDK dan Git, lalu tempatkan Flutter di direktori non-admin seperti C:\\src\\flutter.",
+            lead: "Di Windows, gunakan Windows Package Manager (winget) untuk menginstal OpenJDK 21 dan Git, lalu tempatkan Flutter di direktori non-admin seperti C:\\src\\flutter.",
             codeBlocks: [
               {
                 filename: "powershell (run as administrator)",
                 language: "powershell",
-                code: "# 1. Pasang OpenJDK 17 dan Git via Winget\nwinget install Microsoft.OpenJDK.17\nwinget install Git.Git\n\n# 2. Buat direktori C:\\src dan clone Flutter SDK\nNew-Item -ItemType Directory -Path 'C:\\src' -Force\ncd C:\\src\ngit clone https://github.com/flutter/flutter.git -b stable\n\n# 3. Tambahkan Flutter ke User PATH via PowerShell\n$UserPath = [Environment]::GetEnvironmentVariable('Path', 'User')\n[Environment]::SetEnvironmentVariable('Path', \"$UserPath;C:\\src\\flutter\\bin\", 'User')\n\n# Restart terminal PowerShell lalu periksa:\nflutter --version",
-                description: "Setup otomatis Java dan Flutter di Windows 10/11."
+                code: "# 1. Pasang OpenJDK 21 dan Git via Winget\nwinget install Microsoft.OpenJDK.21\nwinget install Git.Git\n\n# 2. Buat direktori C:\\src dan clone Flutter SDK\nNew-Item -ItemType Directory -Path 'C:\\src' -Force\ncd C:\\src\ngit clone https://github.com/flutter/flutter.git -b stable\n\n# 3. Tambahkan Flutter ke User PATH via PowerShell\n$UserPath = [Environment]::GetEnvironmentVariable('Path', 'User')\n[Environment]::SetEnvironmentVariable('Path', \"$UserPath;C:\\src\\flutter\\bin\", 'User')\n\n# Restart terminal PowerShell lalu periksa:\njava -version\nflutter --version",
+                description: "Setup otomatis Java 21 dan Flutter di Windows 10/11."
               }
             ],
             callout: {
@@ -746,13 +746,13 @@ export const ARTICLES_DATA: ArticleItem[] = [
           },
           {
             title: "C. Pemasangan di macOS (Apple Silicon M1/M2/M3 & Intel)",
-            lead: "Di macOS, manfaatkan Homebrew untuk memasang OpenJDK dan letakkan Flutter di direktori development pengguna.",
+            lead: "Di macOS, manfaatkan Homebrew untuk memasang OpenJDK 21 dan letakkan Flutter di direktori development pengguna.",
             codeBlocks: [
               {
                 filename: "terminal — macos zsh",
                 language: "bash",
-                code: "# 1. Install OpenJDK 17 via Homebrew\nbrew install openjdk@17\nsudo ln -sfn $(brew --prefix openjdk@17)/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk\n\n# 2. Unduh Flutter SDK\nmkdir -p ~/development && cd ~/development\ngit clone https://github.com/flutter/flutter.git -b stable\n\n# 3. Tambahkan ke ~/.zshrc\necho 'export PATH=\"$HOME/development/flutter/bin:$PATH\"' >> ~/.zshrc\nsource ~/.zshrc\n\n# 4. Verifikasi\nflutter --version",
-                description: "Instalasi Java 17 dan Flutter di macOS."
+                code: "# 1. Install OpenJDK 21 via Homebrew\nbrew install openjdk@21\nsudo ln -sfn $(brew --prefix openjdk@21)/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-21.jdk\n\n# 2. Unduh Flutter SDK\nmkdir -p ~/development && cd ~/development\ngit clone https://github.com/flutter/flutter.git -b stable\n\n# 3. Tambahkan ke ~/.zshrc\necho 'export PATH=\"$HOME/development/flutter/bin:$PATH\"' >> ~/.zshrc\nsource ~/.zshrc\n\n# 4. Verifikasi\njava -version\nflutter --version",
+                description: "Instalasi Java 21 LTS dan Flutter di macOS."
               }
             ]
           }
