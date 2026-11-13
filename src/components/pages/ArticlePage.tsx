@@ -9,9 +9,10 @@ import {
   Calendar, 
   Clock, 
   Layers, 
-  ArrowUpRight,
+  ArrowUp,
   Contrast,
-  BookOpen
+  List,
+  X
 } from 'lucide-react';
 import { ArticleItem } from '../../types/portfolio';
 import { ARTICLES_DATA } from '../../data/articlesData';
@@ -34,32 +35,54 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({
   const [copiedCodeSnippet, setCopiedCodeSnippet] = useState<string | null>(null);
   const [copiedSlugLink, setCopiedSlugLink] = useState(false);
   const [activeSectionId, setActiveSectionId] = useState<string>(article.sections[0]?.id || "");
+  const [readingProgress, setReadingProgress] = useState(0);
+  const [isQuickNavOpen, setIsQuickNavOpen] = useState(false);
 
   // Scroll to top on article change
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
+    setReadingProgress(0);
   }, [article.slug]);
 
-  // Track scroll position for Table of Contents highlight
+  // Track scroll position for Table of Contents highlight and reading percentage
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + 140;
-      for (const sec of article.sections) {
+      // 1. Reading Progress Calculation
+      const scrollY = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? Math.min(100, Math.max(0, Math.round((scrollY / docHeight) * 100))) : 0;
+      setReadingProgress(progress);
+
+      // 2. Active Section Tracker
+      const offsetTop = scrollY + 160;
+      for (let i = article.sections.length - 1; i >= 0; i--) {
+        const sec = article.sections[i];
         const el = document.getElementById(sec.id);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSectionId(sec.id);
-            break;
-          }
+        if (el && el.offsetTop <= offsetTop) {
+          setActiveSectionId(sec.id);
+          break;
         }
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, [article.sections]);
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+      setActiveSectionId(id);
+      setIsQuickNavOpen(false);
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setIsQuickNavOpen(false);
+  };
 
   const handleCopyCode = (code: string, id: string) => {
     navigator.clipboard.writeText(code);
@@ -81,10 +104,14 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({
   const prevArticle = currentIndex > 0 ? ARTICLES_DATA[currentIndex - 1] : null;
   const nextArticle = currentIndex < ARTICLES_DATA.length - 1 ? ARTICLES_DATA[currentIndex + 1] : null;
 
+  // Active section title for floating telemetry
+  const currentSection = article.sections.find((s) => s.id === activeSectionId) || article.sections[0];
+  const activeSectionTitle = currentSection ? currentSection.title.replace(/^\d+\s*\/\/\s*/, '') : '';
+
   return (
-    <div className="min-h-screen font-sans flex flex-col justify-between">
+    <div className="min-h-screen font-sans flex flex-col justify-between relative">
       {/* ==========================================
-          STICKY ARTICLE TOP NAVIGATION BAR
+          STICKY TOP TELEMETRY & NAVIGATION BAR
          ========================================== */}
       <header className={`sticky top-0 z-30 border-b border-current ${isInverted ? "bg-black" : "bg-white"}`}>
         <div className="w-full grid grid-cols-12 text-xs font-mono uppercase tracking-wider">
@@ -93,7 +120,7 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({
             <button
               onClick={onBackToPortfolio}
               className="flex items-center gap-2 font-bold tracking-tight hover:opacity-75 transition-opacity cursor-pointer group"
-              title="Kembali ke Halaman Portofolio"
+              title="Kembali ke Portofolio Utama"
             >
               <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
               <span>PORTFOLIO // INDEX</span>
@@ -121,7 +148,7 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({
             <button
               onClick={handleCopyShareLink}
               className="h-full px-3 sm:px-4 py-3 border-r border-current hover:bg-current group transition-colors flex items-center gap-1.5 cursor-pointer"
-              title="Salin Link Artikel dengan Slug"
+              title="Salin Link Slug Artikel"
             >
               {copiedSlugLink ? (
                 <>
@@ -143,7 +170,7 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({
             <button
               onClick={onTogglePolarity}
               className="h-full px-3 sm:px-4 py-3 hover:bg-current group transition-colors flex items-center gap-1.5 font-bold cursor-pointer"
-              title="Ganti Tema Gelap / Terang"
+              title="Toggle Light / Dark Mode"
             >
               <Contrast className={`w-3.5 h-3.5 group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`} />
               <span className={`text-[10px] group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
@@ -151,6 +178,14 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({
               </span>
             </button>
           </div>
+        </div>
+
+        {/* Global Reading Progress Bar directly under header */}
+        <div className="w-full h-1 bg-current/15 relative overflow-hidden">
+          <div 
+            className="h-full bg-current transition-all duration-150 ease-out"
+            style={{ width: `${readingProgress}%` }}
+          />
         </div>
       </header>
 
@@ -208,75 +243,85 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({
       {/* ==========================================
           ARTICLE BODY: DUAL COLUMN LAYOUT
          ========================================== */}
-      <main className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 flex-1">
-        {/* Desktop Sticky Table of Contents Sidebar */}
-        <aside className="lg:col-span-4 border-b lg:border-b-0 lg:border-r border-current p-6 sm:p-10">
-          <div className="lg:sticky lg:top-24 space-y-6">
-            <div className="border border-current p-4 sm:p-5 font-mono text-xs">
+      <main className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 flex-1 relative">
+        {/* ==========================================
+            DESKTOP STICKY SIDEBAR (FOLLOWS WHILE SCROLLING)
+           ========================================== */}
+        <aside className="lg:col-span-4 border-b lg:border-b-0 lg:border-r border-current p-6 sm:p-8">
+          <div className="sticky top-20 space-y-6 max-h-[calc(100vh-6rem)] overflow-y-auto pr-1">
+            <div className="border-2 border-current p-4 sm:p-5 font-mono text-xs shadow-sm">
               <div className="font-bold uppercase tracking-wider mb-4 flex items-center justify-between border-b border-current pb-2">
                 <span className="flex items-center gap-2">
                   <Layers className="w-4 h-4" />
                   TABLE OF CONTENTS
                 </span>
                 <span className="text-[10px] opacity-60">
-                  {article.sections.length} PARTS
+                  {readingProgress}% READ
                 </span>
               </div>
 
-              <nav className="space-y-2">
+              <nav className="space-y-1.5">
                 {article.sections.map((sec, idx) => {
                   const isActive = activeSectionId === sec.id;
                   return (
-                    <a
+                    <button
                       key={sec.id}
-                      href={`#${sec.id}`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        const el = document.getElementById(sec.id);
-                        if (el) {
-                          el.scrollIntoView({ behavior: 'smooth' });
-                          setActiveSectionId(sec.id);
-                        }
-                      }}
-                      className={`block py-1.5 px-2 transition-colors text-left text-[11px] font-mono leading-snug rounded-none ${
+                      onClick={() => scrollToSection(sec.id)}
+                      className={`w-full block py-2 px-2.5 transition-all text-left text-[11px] font-mono leading-snug cursor-pointer ${
                         isActive
-                          ? "bg-current font-bold"
-                          : "hover:bg-current/10 opacity-80"
+                          ? "bg-current font-bold border-l-4 border-current"
+                          : "hover:bg-current/10 opacity-75 hover:opacity-100"
                       }`}
                     >
                       <span className={isActive ? (isInverted ? "text-black" : "text-white") : ""}>
                         [{String(idx + 1).padStart(2, '0')}] {sec.title.replace(/^\d+\s*\/\/\s*/, '')}
                       </span>
-                    </a>
+                    </button>
                   );
                 })}
               </nav>
+
+              {/* Progress bar inside TOC */}
+              <div className="mt-4 pt-3 border-t border-current flex items-center justify-between text-[10px] opacity-75">
+                <span>SCROLL PROGRESS</span>
+                <span className="font-bold">{readingProgress}%</span>
+              </div>
             </div>
 
             {/* Quick Share Card */}
             <div className="border border-current p-4 font-mono text-xs space-y-3">
               <div className="font-bold uppercase tracking-wider text-[11px]">
-                ARTICLE METADATA
+                QUICK ACTIONS
               </div>
-              <div className="text-[11px] opacity-80 space-y-1">
-                <div>ID: {article.id}</div>
-                <div>SLUG: #{article.slug}</div>
-                <div>AUTHOR: {article.author}</div>
+              <div className="grid grid-cols-2 gap-2 text-[10px]">
+                <button
+                  onClick={scrollToTop}
+                  className="border border-current py-2 px-2 font-bold uppercase flex items-center justify-center gap-1.5 hover:bg-current group transition-colors cursor-pointer"
+                  title="Kembali ke atas artikel"
+                >
+                  <ArrowUp className={`w-3.5 h-3.5 group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`} />
+                  <span className={`group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
+                    TOP
+                  </span>
+                </button>
+                <button
+                  onClick={handleCopyShareLink}
+                  className="border border-current py-2 px-2 font-bold uppercase flex items-center justify-center gap-1.5 hover:bg-current group transition-colors cursor-pointer"
+                  title="Salin tautan artikel"
+                >
+                  <Share2 className={`w-3.5 h-3.5 group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`} />
+                  <span className={`group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
+                    SHARE
+                  </span>
+                </button>
               </div>
-              <button
-                onClick={handleCopyShareLink}
-                className="w-full border border-current py-2 font-bold uppercase flex items-center justify-center gap-2 hover:bg-current group transition-colors cursor-pointer text-[11px]"
-              >
-                <Share2 className={`w-3.5 h-3.5 group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`} />
-                <span className={`group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
-                  {copiedSlugLink ? "SLUG LINK COPIED!" : "SHARE THIS ARTICLE"}
-                </span>
-              </button>
             </div>
           </div>
         </aside>
 
-        {/* Main Content Column */}
+        {/* ==========================================
+            MAIN READING COLUMN
+           ========================================== */}
         <section className="lg:col-span-8 p-6 sm:p-10 lg:p-12 space-y-16">
           {article.sections.map((sec) => (
             <article key={sec.id} id={sec.id} className="scroll-mt-24">
@@ -451,6 +496,107 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({
           </div>
         </section>
       </main>
+
+      {/* ==========================================
+          UNIVERSAL FLOATING BOTTOM QUICK-NAV DOCK (ALWAYS ACCESSIBLE FROM ANYWHERE)
+         ========================================== */}
+      <div className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 w-[94%] max-w-2xl">
+        {/* Floating Quick Jump Popover Menu (when open) */}
+        {isQuickNavOpen && (
+          <div className={`border-2 border-current p-4 mb-2 shadow-2xl backdrop-blur-md font-mono text-xs animate-in fade-in slide-in-from-bottom-2 duration-150 ${
+            isInverted ? "bg-black/95 text-white" : "bg-white/95 text-black"
+          }`}>
+            <div className="flex items-center justify-between border-b border-current pb-2 mb-3">
+              <span className="font-bold uppercase tracking-wider flex items-center gap-1.5">
+                <Layers className="w-3.5 h-3.5" />
+                JUMP TO SECTION DIRECTLY
+              </span>
+              <button
+                onClick={() => setIsQuickNavOpen(false)}
+                className="p-1 hover:bg-current group cursor-pointer"
+                title="Tutup Menu"
+              >
+                <X className={`w-4 h-4 group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`} />
+              </button>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-60 overflow-y-auto pr-1">
+              {article.sections.map((sec, idx) => {
+                const isActive = activeSectionId === sec.id;
+                return (
+                  <button
+                    key={sec.id}
+                    onClick={() => scrollToSection(sec.id)}
+                    className={`py-1.5 px-2 text-left truncate text-[11px] cursor-pointer ${
+                      isActive
+                        ? "bg-current font-bold"
+                        : "hover:bg-current/15 opacity-80 hover:opacity-100"
+                    }`}
+                  >
+                    <span className={isActive ? (isInverted ? "text-black" : "text-white") : ""}>
+                      [{String(idx + 1).padStart(2, '0')}] {sec.title.replace(/^\d+\s*\/\/\s*/, '')}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Floating Dock Bar */}
+        <div className={`border-2 border-current shadow-xl backdrop-blur-md px-3 sm:px-4 py-2.5 flex items-center justify-between gap-3 font-mono text-xs ${
+          isInverted ? "bg-black/90 text-white" : "bg-white/90 text-black"
+        }`}>
+          {/* Progress & Current Section Info */}
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <span className="border border-current px-1.5 py-0.5 text-[10px] font-bold shrink-0">
+              {readingProgress}%
+            </span>
+            <div className="truncate text-[11px] opacity-80 hidden sm:block">
+              {activeSectionTitle}
+            </div>
+          </div>
+
+          {/* Quick Action Buttons */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            {/* Toggle Table of Contents Popover */}
+            <button
+              onClick={() => setIsQuickNavOpen(!isQuickNavOpen)}
+              className={`border border-current px-2.5 py-1 text-[11px] font-bold flex items-center gap-1.5 cursor-pointer transition-colors ${
+                isQuickNavOpen ? "bg-current" : "hover:bg-current/15"
+              }`}
+              title="Buka Menu Daftar Isi Cepat"
+            >
+              <List className={`w-3.5 h-3.5 ${isQuickNavOpen ? (isInverted ? "text-black" : "text-white") : ""}`} />
+              <span className={isQuickNavOpen ? (isInverted ? "text-black" : "text-white") : ""}>
+                TOC
+              </span>
+            </button>
+
+            {/* Scroll To Top Button */}
+            <button
+              onClick={scrollToTop}
+              className="border border-current px-2.5 py-1 text-[11px] font-bold flex items-center gap-1 hover:bg-current group transition-colors cursor-pointer"
+              title="Lompat ke Atas Halaman"
+            >
+              <ArrowUp className={`w-3.5 h-3.5 group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`} />
+              <span className={`group-hover-invert hidden xs:inline ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
+                TOP
+              </span>
+            </button>
+
+            {/* Return to Portfolio Button */}
+            <button
+              onClick={onBackToPortfolio}
+              className="border border-current px-2.5 py-1 text-[11px] font-bold hover:bg-current group transition-colors cursor-pointer"
+              title="Kembali ke Portofolio"
+            >
+              <span className={`group-hover-invert ${isInverted ? "group-hover:text-black" : "group-hover:text-white"}`}>
+                INDEX
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
 
       {/* ==========================================
           MINIMAL ARTICLE FOOTER

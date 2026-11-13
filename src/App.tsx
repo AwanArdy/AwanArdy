@@ -301,7 +301,7 @@ export default function App() {
     : null;
 
   return (
-    <div className={`min-h-screen font-sans relative overflow-x-hidden ${themeClasses}`}>
+    <div className={`min-h-screen font-sans relative overflow-x-clip ${themeClasses}`}>
       {/* Custom Styles for Swiss Kinetic Marquee */}
       <style>{`
         @keyframes swissMarquee {
