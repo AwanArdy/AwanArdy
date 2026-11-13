@@ -664,5 +664,290 @@ export const ARTICLES_DATA: ArticleItem[] = [
         ]
       }
     ]
+  },
+  {
+    id: "ART-03",
+    slug: "flutter-setup-from-scratch-without-android-studio-vscode-neovim",
+    title: "Panduan Lengkap Setup Flutter dari 0 Tanpa Android Studio di VS Code & Neovim",
+    subtitle: "SETUP RINGAN COMMAND-LINE TOOLS, TARGET ANDROID 10+, FLUTTER WEB (BROWSER), UNTUK LINUX, WINDOWS & MACOS",
+    category: "MOBILE & WEB ENGINEERING",
+    readTime: "20 MIN READ",
+    date: "NOVEMBER 2026",
+    author: "Muhammad Awan Ardy Firmansyah",
+    tags: [
+      "Flutter",
+      "Dart",
+      "Android",
+      "Web",
+      "Neovim",
+      "VSCode",
+      "Linux",
+      "Windows",
+      "macOS"
+    ],
+    summary:
+      "Tutorial komprehensif menginstal dan mengonfigurasi environment Flutter SDK dari nol tanpa memasang Android Studio yang berat. Menggunakan Android Command-line Tools (sdkmanager), OpenJDK 17, target Android 10+ (API 29-35), dukungan Flutter Web di browser, serta integrasi workflow di VS Code dan Neovim (flutter-tools.nvim) untuk Linux, Windows, dan macOS.",
+    sections: [
+      {
+        id: "flutter-step-1-architecture",
+        title: "01 // Konsep Headless: Mengapa Tanpa Android Studio?",
+        subsections: [
+          {
+            title: "Efisiensi Resource & Otomasi Command-Line",
+            lead: "Android Studio adalah IDE yang sangat lengkap, namun memakan 3GB hingga 6GB RAM hanya untuk proses dasarnya. Dengan metode Headless CLI, Anda menghemat gigabytes disk space dan RAM secara masif.",
+            paragraphs: [
+              "Flutter pada dasarnya hanya membutuhkan tiga komponen inti dari ekosistem Android: Java Development Kit (OpenJDK), Android Command-line Tools (sdkmanager), dan Platform SDK. Seluruh proses build APK, download emulator, hingga deployment ke device dapat dieksekusi 100% via terminal.",
+              "Panduan ini dirancang untuk: (1) Menjalankan aplikasi ke Android fisik/emulator dengan target Android 10+ (API level 29 hingga 34/35), (2) Menjalankan Flutter Web langsung di browser (Chrome/Edge/Web-Server), dan (3) Integrasi editing, code navigation, serta hot reload di VS Code dan Neovim."
+            ],
+            callout: {
+              type: "tip",
+              text: "Workflow ini sangat ideal bagi developer laptop dengan RAM terbatas (8GB-16GB), pengguna Linux/Unix minimalis, serta penggemar Neovim/Vim yang menginginkan kecepatan respons instan tanpa lag IDE."
+            }
+          }
+        ]
+      },
+      {
+        id: "flutter-step-2-os-prerequisites",
+        title: "02 // Instalasi OpenJDK & Flutter SDK Berdasarkan OS",
+        subsections: [
+          {
+            title: "A. Pemasangan di Linux (Ubuntu / Debian / Fedora)",
+            lead: "Pasang OpenJDK 17 LTS dan dependensi inti Linux, lalu clone Flutter SDK langsung dari repository resmi GitHub.",
+            codeBlocks: [
+              {
+                filename: "terminal — ubuntu / debian",
+                language: "bash",
+                code: "# 1. Install OpenJDK 17 dan utilitas sistem\nsudo apt update\nsudo apt install -y openjdk-17-jdk git curl unzip xz-utils zip libglu1-mesa clang cmake ninja-build pkg-config libgtk-3-dev\n\n# 2. Buat direktori dan unduh Flutter SDK Stable\nmkdir -p ~/development\ncd ~/development\ngit clone https://github.com/flutter/flutter.git -b stable\n\n# 3. Daftarkan Flutter ke PATH (~/.bashrc atau ~/.zshrc)\necho 'export PATH=\"$HOME/development/flutter/bin:$PATH\"' >> ~/.bashrc\nsource ~/.bashrc\n\n# 4. Verifikasi instalasi flutter\nflutter --version",
+                description: "Instalasi Java dan Flutter SDK di distribusi Debian/Ubuntu."
+              },
+              {
+                filename: "terminal — fedora workstation",
+                language: "bash",
+                code: "# 1. Install Java 17 dan dependencies\nsudo dnf install -y java-17-openjdk-devel git curl unzip clang cmake ninja-build pkg-config gtk3-devel\n\n# 2. Clone Flutter SDK ke home folder\nmkdir -p ~/development && cd ~/development\ngit clone https://github.com/flutter/flutter.git -b stable\n\n# 3. Export PATH\necho 'export PATH=\"$HOME/development/flutter/bin:$PATH\"' >> ~/.bashrc\nsource ~/.bashrc",
+                description: "Perintah instalasi untuk Fedora / RHEL."
+              }
+            ]
+          },
+          {
+            title: "B. Pemasangan di Windows (PowerShell / Winget)",
+            lead: "Di Windows, gunakan Windows Package Manager (winget) untuk menginstal OpenJDK dan Git, lalu tempatkan Flutter di direktori non-admin seperti C:\\src\\flutter.",
+            codeBlocks: [
+              {
+                filename: "powershell (run as administrator)",
+                language: "powershell",
+                code: "# 1. Pasang OpenJDK 17 dan Git via Winget\nwinget install Microsoft.OpenJDK.17\nwinget install Git.Git\n\n# 2. Buat direktori C:\\src dan clone Flutter SDK\nNew-Item -ItemType Directory -Path 'C:\\src' -Force\ncd C:\\src\ngit clone https://github.com/flutter/flutter.git -b stable\n\n# 3. Tambahkan Flutter ke User PATH via PowerShell\n$UserPath = [Environment]::GetEnvironmentVariable('Path', 'User')\n[Environment]::SetEnvironmentVariable('Path', \"$UserPath;C:\\src\\flutter\\bin\", 'User')\n\n# Restart terminal PowerShell lalu periksa:\nflutter --version",
+                description: "Setup otomatis Java dan Flutter di Windows 10/11."
+              }
+            ],
+            callout: {
+              type: "warning",
+              text: "PERINGATAN WINDOWS: Jangan menempatkan folder flutter di 'C:\\Program Files\\' karena memerlukan hak akses administrator yang dapat memicu permission denied saat Flutter menjalankan upgrade atau caching."
+            }
+          },
+          {
+            title: "C. Pemasangan di macOS (Apple Silicon M1/M2/M3 & Intel)",
+            lead: "Di macOS, manfaatkan Homebrew untuk memasang OpenJDK dan letakkan Flutter di direktori development pengguna.",
+            codeBlocks: [
+              {
+                filename: "terminal — macos zsh",
+                language: "bash",
+                code: "# 1. Install OpenJDK 17 via Homebrew\nbrew install openjdk@17\nsudo ln -sfn $(brew --prefix openjdk@17)/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk\n\n# 2. Unduh Flutter SDK\nmkdir -p ~/development && cd ~/development\ngit clone https://github.com/flutter/flutter.git -b stable\n\n# 3. Tambahkan ke ~/.zshrc\necho 'export PATH=\"$HOME/development/flutter/bin:$PATH\"' >> ~/.zshrc\nsource ~/.zshrc\n\n# 4. Verifikasi\nflutter --version",
+                description: "Instalasi Java 17 dan Flutter di macOS."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: "flutter-step-3-android-commandline-tools",
+        title: "03 // Setup Android SDK Tanpa Android Studio (cmdline-tools & sdkmanager)",
+        subsections: [
+          {
+            title: "Trik Struktur Folder cmdline-tools/latest (Krusial)",
+            lead: "Banyak developer gagal menyiapkan Android SDK headless karena Google mendistribusikan zip tools tanpa folder 'latest'. Android SDK mewajibkan struktur path: $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager.",
+            paragraphs: [
+              "Unduh Command-line Tools resmi dari Google (scroll ke bagian 'Command line tools only' di developer.android.com/studio), lalu susun struktur folder dengan benar:"
+            ],
+            codeBlocks: [
+              {
+                filename: "terminal — linux / macos setup sdk",
+                language: "bash",
+                code: "# 1. Siapkan direktori Android SDK\nmkdir -p ~/Android/Sdk/cmdline-tools\ncd ~/Android/Sdk/cmdline-tools\n\n# 2. Unduh command-line tools resmi Google (versi stabil)\n# Untuk Linux:\ncurl -o cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip\n# (Jika di macOS gunakan: commandlinetools-mac-11076708_latest.zip)\n\n# 3. Ekstrak zip\nunzip cmdline-tools.zip\n\n# 4. TRIK WAJIB: Bungkus isi ke subfolder bernama 'latest'\nmkdir -p latest\nmv cmdline-tools/* latest/ 2>/dev/null || true\nrm -rf cmdline-tools.zip cmdline-tools\n\n# Hasil path akhir: ~/Android/Sdk/cmdline-tools/latest/bin/sdkmanager",
+                description: "Membuat struktur folder standar sdkmanager di Linux / macOS."
+              },
+              {
+                filename: "terminal — environment variables (~/.bashrc atau ~/.zshrc)",
+                language: "bash",
+                code: "# Tambahkan konfigurasi berikut ke ~/.bashrc (Linux) atau ~/.zshrc (macOS):\nexport ANDROID_HOME=\"$HOME/Android/Sdk\"\nexport ANDROID_SDK_ROOT=\"$ANDROID_HOME\"\nexport PATH=\"$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator\"\n\n# Terapkan konfigurasi\nsource ~/.bashrc",
+                description: "Environment variables permanen untuk Android CLI."
+              },
+              {
+                filename: "powershell — windows cmdline-tools setup",
+                language: "powershell",
+                code: "# 1. Buat direktori C:\\Android\\Sdk\\cmdline-tools\nNew-Item -ItemType Directory -Path 'C:\\Android\\Sdk\\cmdline-tools\\latest' -Force\n\n# 2. Unduh commandlinetools-win zip dari developer.android.com\nInvoke-WebRequest -Uri 'https://dl.google.com/android/repository/commandlinetools-win-11076708_latest.zip' -OutFile 'C:\\Android\\cmdline.zip'\nExpand-Archive -Path 'C:\\Android\\cmdline.zip' -DestinationPath 'C:\\Android\\tmp'\nCopy-Item -Path 'C:\\Android\\tmp\\cmdline-tools\\*' -Destination 'C:\\Android\\Sdk\\cmdline-tools\\latest' -Recurse\nRemove-Item 'C:\\Android\\cmdline.zip', 'C:\\Android\\tmp' -Recurse -Force\n\n# 3. Set Environment Variable Windows (Permanen User)\n[Environment]::SetEnvironmentVariable('ANDROID_HOME', 'C:\\Android\\Sdk', 'User')\n$CurrentPath = [Environment]::GetEnvironmentVariable('Path', 'User')\n[Environment]::SetEnvironmentVariable('Path', \"$CurrentPath;C:\\Android\\Sdk\\cmdline-tools\\latest\\bin;C:\\Android\\Sdk\\platform-tools\", 'User')",
+                description: "Script penyiapan sdkmanager di Windows PowerShell."
+              }
+            ]
+          },
+          {
+            title: "Instalasi Platform SDK Android 10+ (API 29-34) & Build Tools",
+            lead: "Gunakan utilitas 'sdkmanager' untuk memasang platform Android yang mendukung perangkat Android 10 (API 29) hingga Android 14/15 (API 34/35), platform-tools (adb), serta build-tools terbaru.",
+            codeBlocks: [
+              {
+                filename: "terminal — install android platform & adb",
+                language: "bash",
+                code: "# 1. Pasang platform-tools (adb), platform target, dan build-tools\nsdkmanager --install \"platform-tools\" \"platforms;android-34\" \"build-tools;34.0.0\"\n\n# 2. Terima seluruh lisensi Android SDK (Jawab 'y' untuk setiap prompt)\nsdkmanager --licenses\n\n# 3. Hubungkan lokasi Android SDK ke Flutter\nflutter config --android-sdk $ANDROID_HOME\n\n# 4. Setujui lisensi melalui Flutter CLI\nflutter doctor --android-licenses",
+                description: "Mengunduh platform target Android 10+ dan menyetujui lisensi resmi."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: "flutter-step-4-web-support",
+        title: "04 // Setup Flutter Web: Menjalankan Aplikasi di Browser",
+        subsections: [
+          {
+            title: "Aktivasi Engine Flutter Web",
+            lead: "Flutter memiliki dukungan first-class untuk web development menggunakan HTML/CSS/CanvasKit. Aktifkan konfigurasi web dan tentukan browser target.",
+            codeBlocks: [
+              {
+                filename: "terminal — enable web",
+                language: "bash",
+                code: "# 1. Aktifkan fitur web pada Flutter\nflutter config --enable-web\n\n# 2. Periksa device yang tersedia (Chrome / Edge / Web Server)\nflutter devices",
+                description: "Mengaktifkan target kompilasi Web di Flutter."
+              }
+            ]
+          },
+          {
+            title: "Konfigurasi Browser Path di Linux & Menjalankan Web-Server",
+            lead: "Di Linux, jika Google Chrome atau Chromium terpasang di path non-standar, cukup daftarkan env variable CHROME_EXECUTABLE.",
+            codeBlocks: [
+              {
+                filename: "terminal — chrome executable & web runner",
+                language: "bash",
+                code: "# Daftarkan browser Chrome atau Chromium di ~/.bashrc (Linux)\nexport CHROME_EXECUTABLE=\"/usr/bin/google-chrome\"\n# Atau jika menggunakan chromium:\n# export CHROME_EXECUTABLE=\"/usr/bin/chromium-browser\"\n\n# Menjalankan Flutter Web langsung di Chrome dengan Hot Reload:\nflutter run -d chrome\n\n# Alternatif: Jalankan mode Web Server (Bisa dibuka dari perangkat manapun dalam 1 jaringan WiFi):\nflutter run -d web-server --web-port=8080 --web-hostname=0.0.0.0",
+                description: "Menjalankan aplikasi Flutter di browser atau local network server."
+              }
+            ],
+            callout: {
+              type: "tip",
+              text: "Mode 'web-server' sangat berguna jika Anda ingin menguji aplikasi Flutter Web langsung dari browser smartphone Android Anda tanpa kabel, cukup buka IP laptop:8080 di browser HP."
+            }
+          }
+        ]
+      },
+      {
+        id: "flutter-step-5-vscode-setup",
+        title: "05 // Konfigurasi Editor: Visual Studio Code",
+        subsections: [
+          {
+            title: "Ekstensi Esensial & Konfigurasi settings.json",
+            lead: "Cukup pasang 2 ekstensi utama di VS Code: 'Dart-Code.flutter' dan 'Dart-Code.dart'. Anda tidak memerlukan plugin Android Studio.",
+            codeBlocks: [
+              {
+                filename: "terminal — install extensions via cli",
+                language: "bash",
+                code: "code --install-extension Dart-Code.flutter\ncode --install-extension Dart-Code.dart\ncode --install-extension usernamehw.errorlens",
+                description: "Instalasi ekstensi Flutter & Dart resmi di VS Code."
+              },
+              {
+                filename: ".vscode/settings.json (workspace rekomendasi)",
+                language: "json",
+                code: "{\n  \"dart.flutterSdkPath\": null,\n  \"editor.formatOnSave\": true,\n  \"editor.formatOnType\": true,\n  \"editor.codeActionsOnSave\": {\n    \"source.fixAll\": \"explicit\"\n  },\n  \"dart.previewFlutterUiGuides\": true,\n  \"dart.closingLabels\": true,\n  \"dart.debugExternalPackageLibraries\": false,\n  \"dart.debugSdkLibraries\": false\n}",
+                description: "Pengaturan auto-formatting, guideline UI pohon widget, dan closing labels."
+              }
+            ]
+          },
+          {
+            title: "Workflow Debugging & Device Selector di VS Code",
+            lead: "Gunakan status bar bagian bawah kanan VS Code untuk memilih target device (misalnya: 'Chrome (web)', 'Linux (desktop)', atau 'Android Device (mobile)').",
+            paragraphs: [
+              "Tekan F5 untuk mulai debugging. Hot reload akan berjalan otomatis setiap kali Anda menekan Ctrl+S / Cmd+S. Tekan Shift+F5 untuk menghentikan proses."
+            ]
+          }
+        ]
+      },
+      {
+        id: "flutter-step-6-neovim-setup",
+        title: "06 // Konfigurasi Editor: Neovim (flutter-tools.nvim)",
+        subsections: [
+          {
+            title: "Integrasi flutter-tools.nvim & Mason di Neovim",
+            lead: "Neovim adalah environment paling ringan dan cepat untuk coding Flutter. Menggunakan plugin 'akinsho/flutter-tools.nvim', Anda mendapatkan fitur Hot Reload instan saat save, widget outline, log viewer, dan LSP completion penuh.",
+            codeBlocks: [
+              {
+                filename: "~/.config/nvim/lua/plugins/flutter.lua (Lazy.nvim spec)",
+                language: "lua",
+                code: "return {\n  {\n    \"akinsho/flutter-tools.nvim\",\n    lazy = false,\n    dependencies = {\n      \"nvim-lua/plenary.nvim\",\n      \"stevearc/dressing.nvim\", -- UI picker yang rapi untuk device selection\n      \"neovim/nvim-lspconfig\",\n    },\n    config = function()\n      require(\"flutter-tools\").setup({\n        ui = {\n          border = \"rounded\",\n        },\n        decorations = {\n          statusline = {\n            app_version = true,\n            device = true,\n          },\n        },\n        widget_guides = {\n          enabled = true,\n        },\n        dev_log = {\n          enabled = true,\n          open_cmd = \"botright 12split\", -- Log terbuka otomatis di split bawah\n        },\n        lsp = {\n          color = {\n            enabled = true,\n          },\n          settings = {\n            showTodos = true,\n            completeFunctionCalls = true,\n          },\n        },\n      })\n    end,\n  },\n}",
+                description: "Spesifikasi plugin Neovim lengkap dengan widget guide dan dev log."
+              },
+              {
+                filename: "~/.config/nvim/lua/config/keymaps.lua",
+                language: "lua",
+                code: "-- Keybindings praktis Flutter di Neovim\nlocal map = vim.keymap.set\n\nmap(\"n\", \"<leader>fr\", \"<cmd>FlutterRun<cr>\", { desc = \"Flutter Run\" })\nmap(\"n\", \"<leader>fq\", \"<cmd>FlutterQuit<cr>\", { desc = \"Flutter Quit\" })\nmap(\"n\", \"<leader>fd\", \"<cmd>FlutterDevices<cr>\", { desc = \"Flutter Select Device\" })\nmap(\"n\", \"<leader>fR\", \"<cmd>FlutterRestart<cr>\", { desc = \"Flutter Hot Restart\" })\nmap(\"n\", \"<leader>fl\", \"<cmd>FlutterLogToggle<cr>\", { desc = \"Toggle Flutter Log Window\" })\nmap(\"n\", \"<leader>fo\", \"<cmd>FlutterOutlineToggle<cr>\", { desc = \"Toggle Widget Outline\" })",
+                description: "Pintasan keyboard untuk menjalankan, restart, dan switch device."
+              }
+            ],
+            callout: {
+              type: "tip",
+              text: "Di Neovim dengan flutter-tools.nvim, saat aplikasi sedang 'FlutterRun', setiap kali Anda menyimpan file Dart (:w), Neovim akan otomatis mengirimkan sinyal Hot Reload ke device dalam hitungan milidetik!"
+            }
+          }
+        ]
+      },
+      {
+        id: "flutter-step-7-testing-and-doctor",
+        title: "07 // Inisialisasi Proyek, Target Android 10+, & Verifikasi Akhir",
+        subsections: [
+          {
+            title: "Membuat Proyek Baru & Konfigurasi minSdkVersion 29 (Android 10+)",
+            lead: "Buat boilerplate proyek baru yang mendukung Android dan Web secara bersamaan:",
+            codeBlocks: [
+              {
+                filename: "terminal — create project",
+                language: "bash",
+                code: "# 1. Buat project baru\nflutter create --org com.awanardy --platforms=android,web my_awesome_app\ncd my_awesome_app",
+                description: "Inisialisasi aplikasi Flutter multiplatform."
+              },
+              {
+                filename: "android/app/build.gradle (atau build.gradle.kts) — target android 10+",
+                language: "groovy",
+                code: "// Buka file android/app/build.gradle\nandroid {\n    namespace \"com.awanardy.my_awesome_app\"\n    compileSdk 34\n\n    defaultConfig {\n        applicationId \"com.awanardy.my_awesome_app\"\n        // Android 10 adalah API 29\n        minSdkVersion 29\n        targetSdkVersion 34\n        versionCode 1\n        versionName \"1.0.0\"\n    }\n}",
+                description: "Mengatur batas minimal perangkat ke Android 10 (API Level 29)."
+              }
+            ]
+          },
+          {
+            title: "Menjalankan ke HP Android Fisik via USB / Wireless ADB",
+            lead: "Tidak perlu emulator berat! Cukup aktifkan 'Developer Options' & 'USB Debugging' di smartphone Android 10+ Anda, lalu colokkan kabel USB (atau gunakan Wireless ADB pairing).",
+            codeBlocks: [
+              {
+                filename: "terminal — run to physical device / web",
+                language: "bash",
+                code: "# 1. Cek apakah perangkat Android terdeteksi oleh adb\nadb devices\n\n# 2. Jalankan aplikasi ke smartphone Android:\nflutter run\n\n# 3. Atau jalankan ke Browser Web:\nflutter run -d chrome",
+                description: "Menjalankan aplikasi ke device fisik Android dan browser web."
+              }
+            ]
+          },
+          {
+            title: "Verifikasi Status Akhir dengan flutter doctor",
+            lead: "Jalankan diagnosis akhir untuk memastikan rantai toolchain bekerja dengan sempurna:",
+            codeBlocks: [
+              {
+                filename: "terminal — flutter doctor",
+                language: "bash",
+                code: "flutter doctor -v",
+                description: "Pemeriksaan integritas environment Flutter."
+              }
+            ],
+            callout: {
+              type: "note",
+              text: "CATATAN TENTANG ANDROID STUDIO: 'flutter doctor' mungkin akan menampilkan tanda [!] berwarna kuning pada baris 'Android Studio (not installed)'. Ini 100% normal dan AMAN diabaikan! Selama 'Android toolchain - develop for Android devices' tercentang hijau [✓], kompilasi APK, Gradle build, debugging, dan deploy Android akan berjalan lancar tanpa ada kendala sedikitpun."
+            }
+          }
+        ]
+      }
+    ]
   }
 ];
