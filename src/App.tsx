@@ -9,6 +9,8 @@ import { CapabilitiesSection } from './components/sections/CapabilitiesSection';
 import { ExperienceSection } from './components/sections/ExperienceSection';
 import { ProjectsSection } from './components/sections/ProjectsSection';
 import { ArticlesSection } from './components/sections/ArticlesSection';
+import { ArticlePage } from './components/pages/ArticlePage';
+import { ARTICLES_DATA } from './data/articlesData';
 import { ContactSection } from './components/sections/ContactSection';
 import { Footer } from './components/sections/Footer';
 import { SmartctlTuiModal } from './components/modals/SmartctlTuiModal';
@@ -34,6 +36,7 @@ export default function App() {
   const [isTuiOpen, setIsTuiOpen] = useState(false);
   const [isCvModalOpen, setIsCvModalOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState("00:00:00 WITA");
+  const [currentArticleSlug, setCurrentArticleSlug] = useState<string | null>(null);
 
   const heroTitleRef = useRef<HTMLDivElement>(null);
   const overlayGridRef = useRef<HTMLDivElement>(null);
@@ -84,6 +87,47 @@ export default function App() {
       document.documentElement.classList.remove('inverted', 'dark');
     }
   }, [isInverted]);
+
+  // Sync current dedicated article page with URL hash (#article/slug)
+  useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash;
+      if (hash.startsWith('#article/') || hash.startsWith('#/article/')) {
+        const slug = hash.replace(/^#(?:[/]article[/]|article[/])/, '');
+        const found = ARTICLES_DATA.find((a) => a.slug === slug);
+        if (found) {
+          setCurrentArticleSlug(found.slug);
+        } else {
+          setCurrentArticleSlug(null);
+        }
+      } else {
+        setCurrentArticleSlug(null);
+      }
+    };
+
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+
+  const handleOpenArticle = (slug: string) => {
+    setCurrentArticleSlug(slug);
+    window.location.hash = `article/${slug}`;
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
+  const handleBackToPortfolio = () => {
+    setCurrentArticleSlug(null);
+    window.location.hash = 'articles';
+    setTimeout(() => {
+      document.getElementById('articles')?.scrollIntoView({ behavior: 'smooth' });
+    }, 60);
+  };
+
+  const handleNavigateArticle = (slug: string) => {
+    setCurrentArticleSlug(slug);
+    window.location.hash = `article/${slug}`;
+  };
 
   // ==========================================
   // EXTRAORDINARY ANIME.JS THEME SWITCH ANIMATION
@@ -252,6 +296,10 @@ export default function App() {
     ? "bg-black text-white border-white selection:bg-white selection:text-black"
     : "bg-white text-black border-black selection:bg-black selection:text-white";
 
+  const currentArticle = currentArticleSlug
+    ? ARTICLES_DATA.find((a) => a.slug === currentArticleSlug)
+    : null;
+
   return (
     <div className={`min-h-screen font-sans relative overflow-x-hidden ${themeClasses}`}>
       {/* Custom Styles for Swiss Kinetic Marquee */}
@@ -283,97 +331,113 @@ export default function App() {
         totalShutterTiles={TOTAL_SHUTTER_TILES}
       />
 
-      {/* ==========================================
-          TOP STICKY SWISS NAVIGATION & TELEMETRY BAR
-         ========================================== */}
-      <Header
-        isInverted={isInverted}
-        transitionMode={transitionMode}
-        setTransitionMode={setTransitionMode}
-        onOpenCvModal={() => setIsCvModalOpen(true)}
-        onTogglePolarity={handleAnimatedPolarityToggle}
-        onScrollToSection={scrollToSection}
-      />
-
-      {/* ==========================================
-          MAIN SWISS ASYMMETRIC MODULAR CONTAINER
-         ========================================== */}
-      <main className="w-full">
-        {/* ------------------------------------------
-            HERO SECTION (INTERNATIONAL TYPOGRAPHIC STYLE)
-           ------------------------------------------ */}
-        <HeroSection
+      {currentArticle ? (
+        /* ==========================================
+            DEDICATED FULL ARTICLE READING PAGE
+           ========================================== */
+        <ArticlePage
+          article={currentArticle}
           isInverted={isInverted}
-          currentTime={currentTime}
-          onReplayKinetic={triggerHeroKineticTypography}
-          heroTitleRef={heroTitleRef}
-          renderKineticChars={renderKineticChars}
+          onBackToPortfolio={handleBackToPortfolio}
           onTogglePolarity={handleAnimatedPolarityToggle}
+          onNavigateArticle={handleNavigateArticle}
         />
+      ) : (
+        <>
+          {/* ==========================================
+              TOP STICKY SWISS NAVIGATION & TELEMETRY BAR
+             ========================================== */}
+          <Header
+            isInverted={isInverted}
+            transitionMode={transitionMode}
+            setTransitionMode={setTransitionMode}
+            onOpenCvModal={() => setIsCvModalOpen(true)}
+            onTogglePolarity={handleAnimatedPolarityToggle}
+            onScrollToSection={scrollToSection}
+          />
 
-        {/* ------------------------------------------
-            KINETIC MARQUEE BAND 01
-           ------------------------------------------ */}
-        <MarqueeBanner isInverted={isInverted} />
+          {/* ==========================================
+              MAIN SWISS ASYMMETRIC MODULAR CONTAINER
+             ========================================== */}
+          <main className="w-full">
+            {/* ------------------------------------------
+                HERO SECTION (INTERNATIONAL TYPOGRAPHIC STYLE)
+               ------------------------------------------ */}
+            <HeroSection
+              isInverted={isInverted}
+              currentTime={currentTime}
+              onReplayKinetic={triggerHeroKineticTypography}
+              heroTitleRef={heroTitleRef}
+              renderKineticChars={renderKineticChars}
+              onTogglePolarity={handleAnimatedPolarityToggle}
+            />
 
-        {/* ------------------------------------------
-            01 // TECHNICAL CAPABILITIES & FILTER MATRIX
-           ------------------------------------------ */}
-        <CapabilitiesSection
-          isInverted={isInverted}
-          selectedSkill={selectedSkill}
-          onSelectSkill={handleSelectSkill}
-        />
+            {/* ------------------------------------------
+                KINETIC MARQUEE BAND 01
+               ------------------------------------------ */}
+            <MarqueeBanner isInverted={isInverted} />
 
-        {/* ------------------------------------------
-            02 // PROFESSIONAL EXPERIENCE CHRONOLOGY
-           ------------------------------------------ */}
-        <ExperienceSection
-          isInverted={isInverted}
-          selectedSkill={selectedSkill}
-          onOpenTuiModal={() => setIsTuiOpen(true)}
-        />
+            {/* ------------------------------------------
+                01 // TECHNICAL CAPABILITIES & FILTER MATRIX
+               ------------------------------------------ */}
+            <CapabilitiesSection
+              isInverted={isInverted}
+              selectedSkill={selectedSkill}
+              onSelectSkill={handleSelectSkill}
+            />
 
-        {/* ------------------------------------------
-            03 // SELECTED WORKS & ARCHITECTURE SHOWCASE
-           ------------------------------------------ */}
-        <ProjectsSection
-          isInverted={isInverted}
-          activeProject={activeProject}
-          setActiveProject={setActiveProject}
-          selectedSkill={selectedSkill}
-        />
+            {/* ------------------------------------------
+                02 // PROFESSIONAL EXPERIENCE CHRONOLOGY
+               ------------------------------------------ */}
+            <ExperienceSection
+              isInverted={isInverted}
+              selectedSkill={selectedSkill}
+              onOpenTuiModal={() => setIsTuiOpen(true)}
+            />
 
-        {/* ------------------------------------------
-            04 // TECHNICAL GUIDES & ARTICLES
-           ------------------------------------------ */}
-        <ArticlesSection
-          isInverted={isInverted}
-          selectedSkill={selectedSkill}
-        />
+            {/* ------------------------------------------
+                03 // SELECTED WORKS & ARCHITECTURE SHOWCASE
+               ------------------------------------------ */}
+            <ProjectsSection
+              isInverted={isInverted}
+              activeProject={activeProject}
+              setActiveProject={setActiveProject}
+              selectedSkill={selectedSkill}
+            />
 
-        {/* ------------------------------------------
-            05 // CONTACT & COLOPHON
-           ------------------------------------------ */}
-        <ContactSection
-          isInverted={isInverted}
-          copiedEmail={copiedEmail}
-          onCopyEmail={handleCopyEmail}
-          onTogglePolarity={handleAnimatedPolarityToggle}
-        />
-      </main>
+            {/* ------------------------------------------
+                04 // TECHNICAL GUIDES & ARTICLES
+               ------------------------------------------ */}
+            <ArticlesSection
+              isInverted={isInverted}
+              selectedSkill={selectedSkill}
+              onOpenArticle={handleOpenArticle}
+            />
 
-      {/* ==========================================
-          FOOTER (FULL-WIDTH SWISS COLOPHON & TELEMETRY)
-         ========================================== */}
-      <Footer
-        isInverted={isInverted}
-        currentTime={currentTime}
-        onScrollToSection={scrollToSection}
-        onTogglePolarity={handleAnimatedPolarityToggle}
-        onOpenCvModal={() => setIsCvModalOpen(true)}
-        onOpenTuiModal={() => setIsTuiOpen(true)}
-      />
+            {/* ------------------------------------------
+                05 // CONTACT & COLOPHON
+               ------------------------------------------ */}
+            <ContactSection
+              isInverted={isInverted}
+              copiedEmail={copiedEmail}
+              onCopyEmail={handleCopyEmail}
+              onTogglePolarity={handleAnimatedPolarityToggle}
+            />
+          </main>
+
+          {/* ==========================================
+              FOOTER (FULL-WIDTH SWISS COLOPHON & TELEMETRY)
+             ========================================== */}
+          <Footer
+            isInverted={isInverted}
+            currentTime={currentTime}
+            onScrollToSection={scrollToSection}
+            onTogglePolarity={handleAnimatedPolarityToggle}
+            onOpenCvModal={() => setIsCvModalOpen(true)}
+            onOpenTuiModal={() => setIsTuiOpen(true)}
+          />
+        </>
+      )}
 
       {/* ==========================================
           MODALS (SMARTCTL TUI & ATS CV VIEW)
